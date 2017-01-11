@@ -13,10 +13,6 @@ This solution allows a front end developer to use plain language text to query a
 ##Usage
 
 ### Node
-```
-//.npmrc
-repository=http://ct-avs-web.es.ad.adp.com:4873
-```
 
 ```
 npm install mongo-query-parser

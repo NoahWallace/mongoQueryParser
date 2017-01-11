@@ -2,3 +2,5 @@ build/
 *.log
 .idea/
 dist/
+*.log
+*.map.js
