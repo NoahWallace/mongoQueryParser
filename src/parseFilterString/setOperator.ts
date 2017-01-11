@@ -4,7 +4,7 @@ export interface IOperatorObj {
 }
 
 export function setOperator (str: string): IOperatorObj {
-    let regexOperator: RegExp = new RegExp(/\s+(not)*\s*(eq|gt|gte|lt|lte|ne|in|nin|is|type|mod|regex)\s+/);
+    let regexOperator: RegExp = new RegExp(/\s+(not)*\s*(eq|gt|gte|lt|lte|ne|in|nin|is|type|mod|regex|all|size)\s+/);
     let operator = regexOperator.test(str) ? str.match(regexOperator)[ 0 ].trim() : null;
     let operatorObj: IOperatorObj = {
         falsy:    false,

@@ -11,7 +11,7 @@ export function setValue (obj: string, operator: string): TValue {
 
     let qArr: RegExpMatchArray = obj.match(RValueArray);
     let value: TValue;
-    let OperatorsWithArray=["$in","$nin","$mod"];
+    let OperatorsWithArray=["$in","$nin","$mod","$all"];
     if ( OperatorsWithArray.indexOf(operator) > -1 ) {
         // strings must be wrapped in '' numbers are not
         value = [ qArr.length ] as Array<string | number>;
