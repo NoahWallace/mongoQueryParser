@@ -1,9 +1,10 @@
 export function getProjection (str: string) {
     let splObj = str.split(",");
-    let returnObj = {};
+    let returnObj = {
+        "_id":0
+    };
     splObj.forEach(item => {
-        let include = item.trim() !== "_id" ? 1 : 0;
-        returnObj[ item.trim() ] = include;
+        returnObj[ item.trim() ] = 1;
     });
     return returnObj;
 };
