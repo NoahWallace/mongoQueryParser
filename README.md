@@ -15,19 +15,19 @@ This solution allows a front end developer to use plain language text to query a
 ### Node
 
 ```
-npm install mongo-query-parser
+npm install mongo-qp
 ```
 
  
 ```
 //es6 js
-let parser = require('mongo-query-parser')
+let parser = require('mongo-qp')
 let ParseQuery= parser.ParseQuery;
 
 let query =ParseQuery(req.query)
 
 //typescript 2.1
-import {ParseQuery} from 'mongo-query-parser'
+import {ParseQuery} from 'mongo-qp'
 
 let query =ParseQuery(req.query:Object | string)
 ```
