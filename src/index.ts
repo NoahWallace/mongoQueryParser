@@ -43,7 +43,7 @@ export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
         filter: {}
     };
     if (typeof reqQuery === "string") {
-        returnObj[ "filter" ] = decodeURIComponent(reqQuery[ "filter" ]);
+        returnObj[ "filter" ] = command.filter(decodeURIComponent(reqQuery));
     }
     else {
         for ( const key in reqQuery ) {
