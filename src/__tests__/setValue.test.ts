@@ -136,5 +136,17 @@ describe("#setValue", () => {
             done();
         });
     });
+    describe.only("mod operator", () => {
+        let operator = "$mod";
+        it("should be an array", (done) => {
+            const str = "key mod 4,0";
+            let value = setValue(str, operator);
+            value.should.be.a("array");
+            value.should.have.length(2);
+            value[0].should.equal(4);
+            value[1].should.equal(0);
+            done();
+        });
+    });
 
 });

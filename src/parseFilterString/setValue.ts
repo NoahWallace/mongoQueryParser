@@ -11,7 +11,8 @@ export function setValue (obj: string, operator: string): string | number | Arra
 
     let qArr: RegExpMatchArray = obj.match(RValueArray);
     let value: string | number | Array<string | number>;
-    if ( operator === "$in" || operator === "$nin" ) {
+    let OperatorsWithArray=["$in","$nin","$mod"];
+    if ( OperatorsWithArray.indexOf(operator) > -1 ) {
         // strings must be wrapped in '' numbers are not
         value = [ qArr.length ] as Array<string | number>;
         qArr.forEach((item, idx) => {
