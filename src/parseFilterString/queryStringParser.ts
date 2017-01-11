@@ -1,0 +1,65 @@
+import { getValueObject } from "./getValueObject";
+
+export interface IParserObj {
+    "$or"?: Array<string | IParserObj>;
+    "$and"?: Array<string | IParserObj>;
+    "$nor"?: Array<string | IParserObj>;
+    [key: string]: INotOperator| IOperators | number | string;
+}
+export interface INotOperator {
+    "$not": IOperators;
+}
+export interface IOperators {
+    "$in"?: Array<string | number>;
+    "$nin"?: Array<string | number>;
+    "$eq"?: number | string;
+    "$gt"?: number | string;
+    "$gte"?: number | string;
+    "$lt"?: number | string;
+    "$lte"?: number | string;
+    "$ne"?: number | string;
+
+}
+
+export function qsParser (): (str: string) => IParserObj {
+    let memo = <any>{};
+    let regExOr: RegExp = new RegExp(/ OR /g);
+    let regExAnd: RegExp = new RegExp(/ AND /g);
+    let regExNor: RegExp = new RegExp(/ NOR /g);
+
+    function getSplit (obj: string, regex: RegExp): Array<IParserObj> {
+        let newArr: Array<any> = [];
+        let spl: Array<string> = obj.split(regex);
+        spl.forEach(item => {
+            newArr.push(parser(item.trim()));
+        });
+        return newArr;
+    }
+
+    function parser (str: string): IParserObj {
+        let value: IParserObj;
+        if ( str in memo ) {
+            value = memo[ str ];
+        }
+        else {
+            if ( str.match(regExOr) ) {
+                value = {};
+                value[ "$or" ] = getSplit(str, regExOr);
+            }
+            else if ( str.match(regExAnd) ) {
+                value = {};
+                value[ "$and" ] = getSplit(str, regExAnd);
+            }
+            else if ( str.match(regExNor) ) {
+                value = {};
+                value[ "$nor" ] = getSplit(str, regExNor);
+            }
+            else {
+                value = getValueObject(str);
+            }
+        }
+        return value;
+    };
+    return parser;
+}
+
