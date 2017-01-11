@@ -1,7 +1,7 @@
 import * as chai from "chai";
 const should = chai.should();
 import * as mongo from "mongodb";
-import { ParseMongo } from "../index";
+import { ParseQuery } from "../index";
 let MongoClient = mongo.MongoClient;
 
 describe("mongodb live testing", () => {
@@ -15,7 +15,7 @@ describe("mongodb live testing", () => {
             //skip:    3,
             //limit:   2
         };
-        let query = ParseMongo(queryObj);
+        let query = ParseQuery(queryObj);
         let cursor = collection.find(query.filter, query.project);
         cursor
             .skip(query.skip || 0)

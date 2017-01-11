@@ -22,14 +22,14 @@ npm install mongo-query-parser
 ```
 //es6 js
 let parser = require('mongo-query-parser')
-let ParseMongo= parser.ParseMongo;
+let ParseQuery= parser.ParseQuery;
 
-let query =ParseMongo(req.query)
+let query =ParseQuery(req.query)
 
 //typescript 2.1
-import {ParseMongo} from 'mongo-query-parser'
+import {ParseQuery} from 'mongo-query-parser'
 
-let query =ParseMongo(req.query:Object | string)
+let query =ParseQuery(req.query:Object | string)
 ```
 ### Query
 
@@ -43,7 +43,7 @@ req.query={
     project:"_id,name,somenumber"
 
 }
-let query =ParseMongo(req.query)
+let query =ParseQuery(req.query)
 /* RESULT of query
 {
    "filter":{
@@ -92,7 +92,7 @@ let query =ParseMongo(req.query)
 |limit  |number        |Number       |                                         |
 |sort   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
 
-NOTE: ParseMongo accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
+NOTE: ParseQuery accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
 
 ## Rules
 

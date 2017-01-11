@@ -38,7 +38,7 @@ let command = {
     project: getProjection
 };
 
-export function ParseMongo (reqQuery: IReqQuery | string): IParsedObject {
+export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
     let returnObj = {
         filter: {}
     };
@@ -55,15 +55,7 @@ export function ParseMongo (reqQuery: IReqQuery | string): IParsedObject {
     }
     return returnObj;
 }
-function queryToString(obj: any){
-    if(Object.keys(obj).length === 0){
-        return null;
-    }
-    else{
 
-    }
-}
-export const toQueryObject = <any>ParseMongo;
 
 
 

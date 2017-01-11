@@ -1,6 +1,6 @@
 {
-  "name": "mongo-query-parser",
-  "version": "1.2.0",
+  "name": "mongo-qp",
+  "version": "1.1.0",
   "description": "Creates a object that contains mongo query objects. filter,sort,projection,limit,skip",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/NoahWallace/mongoQueryParser.git"
   },
-  "author": "Noah Wallace",
+  "author": {"name":"Noah Wallace","email":"noah.z.wallace@gmail.com"},
   "license": "ISC",
   "devDependencies": {
     "@types/assert": "0.0.31",
