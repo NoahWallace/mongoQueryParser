@@ -136,7 +136,7 @@ describe("#setValue", () => {
             done();
         });
     });
-    describe.only("mod operator", () => {
+    describe("mod operator", () => {
         let operator = "$mod";
         it("should be an array", (done) => {
             const str = "key mod 4,0";
@@ -145,6 +145,15 @@ describe("#setValue", () => {
             value.should.have.length(2);
             value[0].should.equal(4);
             value[1].should.equal(0);
+            done();
+        });
+    });
+    describe("regex operator", () => {
+        let operator = "$regex";
+        it("should be an array", (done) => {
+            const str = "key regex '/test/i'";
+            let value = setValue(str, operator);
+            value.should.be.instanceof(RegExp);
             done();
         });
     });

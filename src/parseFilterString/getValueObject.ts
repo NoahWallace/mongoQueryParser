@@ -2,7 +2,7 @@ import { typeIs } from "../utils";
 import { setValue } from "./setValue";
 import { setKey, IKeyObj } from "./setKey";
 import { setOperator, IOperatorObj } from "./setOperator";
-
+import {TValue} from './setValue';
 
 export function getValueObject (currentString: string) {
 
@@ -11,7 +11,7 @@ export function getValueObject (currentString: string) {
 
     let resultObj = <any>{};
 
-    let value: string | number | Array<string | number> = setValue(currentString, operatorObj.operator);
+    let value: TValue = setValue(currentString, operatorObj.operator);
     let operatorPair = {[operatorObj.operator]: value};
     if ( keyObj.hasOwnProperty("checkExists") ) {
         resultObj[ keyObj.key ] = {

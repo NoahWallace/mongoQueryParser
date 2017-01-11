@@ -179,7 +179,8 @@ const str = "has name nin 'mickey','donald' AND !has last_name"
 |in       | ['\<string\>' or \<number\>] | Comma Separated string (ie 'abc','def',123)] |
 |nin      | ['\<string\>' or \<number\>] | Comma Separated string (ie 'abc','def',123)] |
 |is<type> | '\<string\>' or \<number\> | value as referenced here [mongodb](https://docs.mongodb.com/manual/reference/operator/query/type/#document-type-available-types)|
-|mod|     | [<number(divisor)>,<number(remainder)>] | Comma Separated string with length of 2 (ie 4,0)|
+|mod     | ['<number(divisor)>,<number(remainder)>] | Comma Separated string with length of 2 (ie 4,0)|
+|regex    | '\<string\>' or ['\<string\>']||
 
 NOTE: Any Operator in the above list can be prefaces with 'not' (ie name not eq 'abc')
 
