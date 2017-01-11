@@ -1,6 +1,7 @@
 import { qsParser } from "./parseFilterString";
 import { ssParser } from "./parseSortString";
 import { IParserObj } from "./parseFilterString";
+import { getProjection } from "./parseProjectionString"
 /*
  * Returns and array of objects that represent a set of query parameters based on mongodb node driver
  * [<query>,[*<projection>, ...keys]]
@@ -19,26 +20,17 @@ export interface IParsedObject {
     skip?: number;
     project?: {[key: string]: 0 | 1};
 }
-let checkNumber = (arg) => isNaN(Number(arg)) ? null : +arg;
-let getProjection = (str: string) => {
-    let splObj = str.split(",");
-    let returnObj = {};
-    splObj.forEach(item => {
-        let include = item.trim() !== "_id" ? 1 : 0;
-        returnObj[ item.trim() ] = include;
-    });
-    return returnObj;
-};
 
-let command = {
-    filter:  qsParser(),
-    limit:   checkNumber,
-    sort:    ssParser,
-    skip:    checkNumber,
-    project: getProjection
-};
 
 export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
+    let checkNumber = (arg) => isNaN(Number(arg)) ? null : +arg;
+    let command = {
+        filter:  qsParser(),
+        limit:   checkNumber,
+        sort:    ssParser,
+        skip:    checkNumber,
+        project: getProjection
+    };
     let returnObj = {
         filter: {}
     };

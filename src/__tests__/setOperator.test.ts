@@ -5,6 +5,7 @@ import { setOperator } from "../parseFilterString/setOperator";
 describe("#setOperator", () => {
     let notop = [ "not $eq", "not $gt", "not $gte", "not $lt", "not $lte", "not $ne", "not $in", "not $nin" ];
     let op = [ "$eq", "$gt", "$gte", "$lt", "$lte", "$ne", "$in", "$nin" ];
+    let pairedop = [["$is","$type"],["$type","$type"]];
     describe("truthy operators", () => {
         it("should return an object", (done) => {
             const str = "name eq abc";
@@ -28,6 +29,14 @@ describe("#setOperator", () => {
                 const str = `name ${item.replace("$", "")} 'abc'`;
                 let operator = setOperator(str);
                 operator.operator.should.equal(item);
+                done();
+            });
+        });
+        pairedop.forEach(item => {
+            it(`should pass operator ${item[0]} and return and object that has property of ${item[1]}`, (done) => {
+                const str = `name ${item[0].replace("$", "")} 'abc'`;
+                let operator = setOperator(str);
+                operator.operator.should.equal(item[1]);
                 done();
             });
         });
