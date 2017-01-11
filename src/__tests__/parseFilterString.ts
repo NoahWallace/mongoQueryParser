@@ -143,6 +143,22 @@ describe("#parseString", () => {
             newFilter[ "$nor" ].should.be.a("Array");
             done();
         });
+        it("should return object with type using is", (done) => {
+            const str = "name is 'array'";
+            let newFilter = parseString(str);
+            newFilter.should.be.a("Object");
+            newFilter.should.haveOwnProperty("name");
+            newFilter[ "name" ].should.haveOwnProperty("$type");
+            done();
+        });
+        it("should return object with type using type", (done) => {
+            const str = "name type 'array'";
+            let newFilter = parseString(str);
+            newFilter.should.be.a("Object");
+            newFilter.should.haveOwnProperty("name");
+            newFilter[ "name" ].should.haveOwnProperty("$type");
+            done();
+        });
 
     });
     describe("testing of exists object", () => {
