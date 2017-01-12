@@ -1,7 +1,8 @@
 import { qsParser } from "./parseFilterString";
 import { ssParser } from "./parseSortString";
 import { IParserObj } from "./parseFilterString";
-import { getProjection } from "./parseProjectionString"
+import { getProjection } from "./parseProjectionString";
+import { aqParser } from "./parseAggregateQuery";
 /*
  * Returns and array of objects that represent a set of query parameters based on mongodb node driver
  * [<query>,[*<projection>, ...keys]]
@@ -34,7 +35,7 @@ export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
     let returnObj = {
         filter: {}
     };
-    if (typeof reqQuery === "string") {
+    if ( typeof reqQuery === "string" ) {
         returnObj[ "filter" ] = command.filter(decodeURIComponent(reqQuery));
     }
     else {
@@ -48,6 +49,14 @@ export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
     return returnObj;
 }
 
-
+export function ParseAggregate (str: string): Array<any> {
+    // match 'name eq 'abc'' THEN project '_id,name,created' THEN sort 'last,name'
+    let parser = aqParser()
+    let agg = str.split(/ THEN /);
+    let returnObj = new Array(agg.length);
+    agg.forEach((item, idx) => {returnObj[idx]= parser(item);})
+    console.log(returnObj)
+    return returnObj
+}
 
 

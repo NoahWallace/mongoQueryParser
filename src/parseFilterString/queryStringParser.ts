@@ -42,15 +42,15 @@ export function qsParser (): (str: string) => IParserObj {
             value = memo[ str ];
         }
         else {
-            if ( str.match(regExOr) ) {
+            if ( regExOr.test(str) ) {
                 value = {};
                 value[ "$or" ] = getSplit(str, regExOr);
             }
-            else if ( str.match(regExAnd) ) {
+            else if ( regExAnd.test(str) ) {
                 value = {};
                 value[ "$and" ] = getSplit(str, regExAnd);
             }
-            else if ( str.match(regExNor) ) {
+            else if ( regExNor.test(str) ) {
                 value = {};
                 value[ "$nor" ] = getSplit(str, regExNor);
             }
