@@ -1,11 +1,14 @@
+import {operatorsRegExp} from '../regExp';
+let tst=operatorsRegExp.test;
+let mtch=operatorsRegExp.match;
+let rpl= operatorsRegExp.replace;
 export interface IOperatorObj {
     falsy: boolean;
     operator: string;
 }
 
 export function setOperator (str: string): IOperatorObj {
-    let regexOperator: RegExp = new RegExp(/\s+(not)*\s*(eq|gt|gte|lt|lte|ne|in|nin|is|type|mod|regex|all|size|contains)\s+/);
-    let operator = regexOperator.test(str) ? str.match(regexOperator)[ 0 ].trim() : null;
+    let operator = tst.hasOperator(str) ? mtch.getOperator(str)[ 0 ].trim() : null;
     let operatorObj: IOperatorObj = {
         falsy:    false,
         operator: null
@@ -24,6 +27,5 @@ function stripOperator(str:string):string{
         "is":"type",
         "contains":"elemMatch"
     };
-    let stripPrefix=(str:string):string=> str.replace(/^not\s+/i, "");
-    return stripPrefix( pairs[str] || str);
+    return rpl.removeNot(pairs[str] || str);
 }

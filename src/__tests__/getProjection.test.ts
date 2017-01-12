@@ -3,9 +3,9 @@ const should = chai.should();
 import { getProjection } from "../parseProjectionString";
 
 
-describe.only("#getProjection",()=>{
+describe("#getProjection",()=>{
     it("",(done)=>{
-        let str = "name contains 'object eq 'abc'',_id";
+        let str = "name contains 'object eq 'abc' {AND} score eq 23',_id";
         console.log(JSON.stringify(getProjection(str)))
         done();
     })

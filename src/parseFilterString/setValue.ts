@@ -1,18 +1,14 @@
-import {qsParser, IParserObj} from './queryStringParser'
+import {qsParser, IParserObj} from './queryStringParser';
+import {valuesRegExp} from "../regExp";
+let rpl=valuesRegExp.replace;
+let tst=valuesRegExp.test;
+let mtch=valuesRegExp.match;
 export type TValue = RegExp | string | number | Array<string | number | RegExp> | IParserObj;
 export function setValue (obj: string, operator: string): TValue {
-    /*
-     * matches all <values> at end of string that are wrapped in apostrophes OR all digits
-     */
-    let RValueArray: RegExp = new RegExp(/((\d+)(?=\s*,*\s*)|(('.+?')(?=\s*,\s*)|('.+'$)))/ig);
-    /*
-     * matches whole string including and after the last space that have apos followed by comma OR have apos
-     */
-    let RValueString: RegExp = new RegExp(/(('.+')+(,'.+')*|\s{1}\S+$)/i);
-
-    let qArr: RegExpMatchArray = obj.match(RValueArray);
     let value: TValue;
-    let OperatorsWithArray=["$in","$nin","$mod","$all"];
+    let qArr: RegExpMatchArray = mtch.arrayFromComma(obj);
+
+    let OperatorsWithArray=["$in","$nin","$mod","$all","$slice"];
     if ( OperatorsWithArray.indexOf(operator) > -1 ) {
         // strings must be wrapped in '' numbers are not
         value = [ qArr.length ] as Array<string | number>;
@@ -21,50 +17,35 @@ export function setValue (obj: string, operator: string): TValue {
         });
     }
     else if(operator=="$elemMatch"){
-        let vString=obj.match(RValueString)[0].trim();
-        let elemString= cleanElemString(vString)
-        return qsParser()(elemString)
+        let vString=mtch.extractValue(obj)[0].trim();
+        let elemString= rpl.trimCurlysFromLogicalOps(vString);
+        return qsParser()(rpl.trimQuote(elemString))
     }
     else {
-        let str: string = obj.match(RValueString)[ 0 ].trim();
+        let str: string = mtch.extractValue(obj)[0].trim();
         const compare = {
             "true":  true,
             "false": false
         };
-        if ( compare[ str ] || str === "false") {
-            value = compare[ str ];
-        }
-        else {
-            value=checkType(str)
-
+        value = compare[ str ] || str === "false" ? compare[ str ] : checkType(str);
+        if ((operator === "$gt" || operator === "$gte") && typeof value === "string"  ) {
+            if(!value || value.match(/^\s+$/))
+                return "~";
         }
     }
     // prevent mongoinjection
-    if ((operator === "$gt" || operator === "$gte") && typeof value === "string"  ) {
-        if(!value || value.match(/^\s+$/))
-        return "~";
-    }
 
     return value;
 }
 
 function checkType(str): string | number | RegExp{
-    let RValueRegex: RegExp = new RegExp(/^\/.+\/([gim]*)?$/);
-    let cleanStr = str.replace(/(^'|'$)/g, "");
-    if(RValueRegex.test(cleanStr)){
-        let regExp=cleanStr.replace(/(^\/|\/([gim]*)?$)/g,"");
-        let options =  cleanStr.replace(/(^\/.+\/)(?=[gim]?)/,"");
+    let cleanStr = rpl.trimQuote(str)
+    if(tst.isRegExString(cleanStr)){
+        let regExp= rpl.getRegExString(cleanStr);
+        let options =  rpl.getRegExOptions(cleanStr);
         return new RegExp(regExp,options) as RegExp;
     }
     else{
         return isNaN(Number(str)) ? cleanStr : +str as string | number;
     }
-}
-function cleanElemString(str){
-
-    let findLogicalOperators=/\{(AND|OR|NOR){1}\}/g;
-    let findBrackets=/(^\{|\}$)/g;
-    let valueStr= str.replace(findLogicalOperators,(match)=>{return match.replace(findBrackets,"")});
-    return valueStr.replace(/(^'|'$)/g,"")
-
 }
