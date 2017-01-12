@@ -72,7 +72,7 @@ let query =ParseQuery(req.query)
       ]
    ],
    "project":{
-      "_id":0,
+      "_id":1,
       "name":1,
       "somenumber":1
    }
@@ -228,4 +228,35 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 ```
 
 
+### Projection
 
+When a Projection key is passed into the query object, mongo-qp will automatically omit the _id key (_id:0)unless requested.
+
+ #### EXAMPLE
+ ```
+    let withId = {
+        project:'_id,name'
+    }
+    let withoutId ={
+        project:'name'
+    }
+    let queryWithId = ParseQuery(withId)
+     /*
+      *returns
+      *   {
+      *       filter:{},
+      *       project:{_id:1,name:1}
+      *   }
+      */
+     let queryWithoutId= ParseQuery(withoutId)
+     /*
+      * returns
+      *   {
+      *       filter:{},
+      *       project:{_id:0,name:1}
+      *   }
+      */
+
+ ```
+
+The reason for this is because in mongo projection, all fields are inclusive except for _id which is an exclusive field. By omitting the field, the [aclage felt more natural
