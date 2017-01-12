@@ -1,4 +1,5 @@
-export type TValue = RegExp | string | number | Array<string | number | RegExp>
+import {qsParser, IParserObj} from './queryStringParser'
+export type TValue = RegExp | string | number | Array<string | number | RegExp> | IParserObj;
 export function setValue (obj: string, operator: string): TValue {
     /*
      * matches all <values> at end of string that are wrapped in apostrophes OR all digits
@@ -18,6 +19,11 @@ export function setValue (obj: string, operator: string): TValue {
         qArr.forEach((item, idx) => {
             value[ idx ] = checkType(item);
         });
+    }
+    else if(operator=="$elemMatch"){
+        let vString=obj.match(RValueString)[0].trim();
+        let elemString= cleanElemString(vString)
+        return qsParser()(elemString)
     }
     else {
         let str: string = obj.match(RValueString)[ 0 ].trim();
@@ -53,4 +59,12 @@ function checkType(str): string | number | RegExp{
     else{
         return isNaN(Number(str)) ? cleanStr : +str as string | number;
     }
+}
+function cleanElemString(str){
+
+    let findLogicalOperators=/\{(AND|OR|NOR){1}\}/g;
+    let findBrackets=/(^\{|\}$)/g;
+    let valueStr= str.replace(findLogicalOperators,(match)=>{return match.replace(findBrackets,"")});
+    return valueStr.replace(/(^'|'$)/g,"")
+
 }

@@ -105,36 +105,57 @@ AND OR and NOT are required to be capital. First split is on OR then AND then NO
 1. EXAMPLE "a eq b OR c eq d" returns EXAMPLE A below
 2. EXAMPLE "a eq b OR c eq d AND e eq f" returns EXAMPLE B below
 3. EXAMPLE "c eq d AND e eq f" returns EXAMPLE C below
+
+When using contains internal operators MUST be wrapped in curly brackets
+1. Example "grades contains 'grade eq 'B' {AND} score eq 23'" returns EXAMPLE D below
 	
 	
 ##### EXAMPLE A
 	
 ```
-	{"$or":[
-		{"a":{"$eq":b},
-		{"c":{"$eq":d})
-	]}
+    {"$or":[
+        {"a":{"$eq":b},
+        {"c":{"$eq":d})
+    ]}
 ```
 	
 ##### EXAMPLE B
 	
 ```
-	{"$or":[
-		{"a":{"$eq":b},
-		{"$and":[
-			{"c":{"$eq":d},
-			{"e":{"$eq":f}
-		]}
-	]}
+    {"$or":[
+        {"a":{"$eq":b},
+        {"$and":[
+            {"c":{"$eq":d},
+            {"e":{"$eq":f}
+        ]}
+    ]}
 ```
 ##### EXAMPLE C
 	
 ```
-	{"$and":[
-		{"c":{"$eq":d},
-		{"e":{"$eq":f}
-	]}
+    {"$and":[
+        {"c":{"$eq":d},
+        {"e":{"$eq":f}
+    ]}
 ```	
+
+##### EXAMPLE D
+
+```
+    {"grades":
+        {"$elemMatch":
+            {"$and":[
+                {"grade":
+                    {"$eq":"B"}
+                },
+                {"score":
+                    {"$eq":23}
+                }
+            ]}
+        }
+    }
+
+```
 
 ### Exists
 (1.0.4)
@@ -183,6 +204,7 @@ const str = "has name nin 'mickey','donald' AND !has last_name"
 |regex    | '\<string\>' or ['\<string\>']|Requires a regex string pattern that starts with / and ends with /. (gim) is optional|
 |all      | ['\<string\>' or \<number\>] |Comma Separated string (ie 'abc','def',123)]|
 |size     |  \<number\>                 |                                           |
+|contains | queryString                 |Add query string surrounded by single quotes<br/> EXCEPTION : any logical operators(AND\|OR\|NOR) inside the string MUST be wrapped in brackets ( {AND} )|
 
 
 NOTE: Any Operator in the above list can be prefaces with 'not' (ie name not eq 'abc')

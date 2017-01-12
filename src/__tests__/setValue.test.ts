@@ -157,5 +157,14 @@ describe("#setValue", () => {
             done();
         });
     });
+    describe("contains operator", () => {
+        let operator = "$elemMatch";
+        it("should be an array", (done) => {
+            const str = "grades contains 'grade eq 'B' {AND} score eq 23'";
+            let value = setValue(str, operator);
+            done();
+        });
+    });
+
 
 });

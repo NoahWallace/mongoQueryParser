@@ -17,7 +17,6 @@ export function getValueObject (currentString: string) {
         resultObj[ keyObj.key ] = {
             "$exists": keyObj.checkExists
         };
-
     }
 
     if ( resultObj[ keyObj.key ] && resultObj[ keyObj.key ].hasOwnProperty("$exists") ) {
@@ -31,7 +30,6 @@ export function getValueObject (currentString: string) {
         }
     }
     else {
-
         resultObj[ keyObj.key ] = operatorObj.falsy ? {"$not": operatorPair} : operatorPair;
     }
 
