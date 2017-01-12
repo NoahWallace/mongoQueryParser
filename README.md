@@ -232,8 +232,9 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 
 When a Projection key is passed into the query object, mongo-qp will automatically omit the _id key (_id:0)unless requested.
 
- #### EXAMPLE
- ```
+#### EXAMPLE
+
+```
     let withId = {
         project:'_id,name'
     }
@@ -256,7 +257,46 @@ When a Projection key is passed into the query object, mongo-qp will automatical
       *       project:{_id:0,name:1}
       *   }
       */
-
  ```
 
 The reason for this is because in mongo projection, all fields are inclusive except for _id which is an exclusive field. By omitting the field, the [aclage felt more natural
+
+#### NOTE
+
+Mongo 3.4 supports projection operators. mongo-qp will also support projection operators. Keep in mind that what you put in is what you get out.
+
+**[$ (projection)](https://docs.mongodb.com/manual/reference/operator/projection/positional/#proj._S_)**
+
+
+#### Example
+
+```
+    ParseQuery({ project:'name.$' })
+    // { filter: {}, project: {'name.$':1}}
+```
+
+**[$elemMatch(projection)](https://docs.mongodb.com/manual/reference/operator/projection/elemMatch/)**
+
+**(1.1.6)** mongo-qp now supports $elemMatch(projection). Usage is the same as query. (mongodb >3.4)
+
+
+#### Example
+
+```
+    ParseQuery({ project:name contains 'score eq 'abc'',_id })
+    /*
+     { filter: {},
+        project: {
+            "_id":1,
+            "name":{
+                "$elemMatch": {
+                    "score": {
+                        "$eq":"abc"
+                    }
+                }
+            }
+        }
+     }
+
+     */
+```
