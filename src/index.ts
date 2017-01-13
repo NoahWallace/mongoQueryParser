@@ -3,6 +3,7 @@ import { ssParser } from "./parseSortString";
 import { IParserObj } from "./parseFilterString";
 import { getProjection } from "./parseProjectionString";
 import { aqParser } from "./parseAggregateQuery";
+import {checkNumber} from "./utils";
 /*
  * Returns and array of objects that represent a set of query parameters based on mongodb node driver
  * [<query>,[*<projection>, ...keys]]
@@ -24,7 +25,6 @@ export interface IParsedObject {
 
 
 export function ParseQuery (reqQuery: IReqQuery | string): IParsedObject {
-    let checkNumber = (arg) => isNaN(Number(arg)) ? null : +arg;
     let command = {
         filter:  qsParser(),
         limit:   checkNumber,
@@ -54,9 +54,9 @@ export function ParseAggregate (str: string): Array<any> {
     let parser = aqParser()
     let agg = str.split(/ THEN /);
     let returnObj = new Array(agg.length);
-    agg.forEach((item, idx) => {returnObj[idx]= parser(item);})
-    console.log(returnObj)
-    return returnObj
+    agg.map((item, idx) => {returnObj[idx]= parser(item);})
+
+    return returnObj;
 }
 
 

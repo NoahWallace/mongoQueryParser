@@ -11,7 +11,7 @@ export function setValue (obj: string, operator: string): TValue {
     if ( OperatorsWithArray.indexOf(operator) > -1 ) {
         // strings must be wrapped in '' numbers are not
         value = [ qArr.length ] as Array<string | number>;
-        qArr.forEach((item, idx) => {
+        qArr.map((item, idx) => {
             value[ idx ] = checkType(item);
         });
     }
