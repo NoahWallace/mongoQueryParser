@@ -3,5 +3,7 @@ build/
 .idea/
 dist/
 *.map.js
+*.js.map
 node_modules
 .npmrc
+/lib/cached_uglify/*

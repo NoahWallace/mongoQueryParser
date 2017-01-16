@@ -27,9 +27,13 @@ let ParseQuery= parser.ParseQuery;
 let query =ParseQuery(req.query)
 
 //typescript 2.1
-import {ParseQuery} from 'mongo-qp'
+import {ParseQuery} from 'mongo-qp'  
 
-let query =ParseQuery(req.query:Object | string)
+let query =ParseQuery(req.query:Object | string)  
+
+// es5 in browser
+<script src="mongoqp.js"></script>
+// files are included in package
 ```
 ### Query
 
