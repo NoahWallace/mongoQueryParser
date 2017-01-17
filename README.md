@@ -21,15 +21,17 @@ npm install mongo-qp
  
 ```
 //es6 js
-let parser = require('mongo-qp')
-let ParseQuery= parser.ParseQuery;
-
-let query =ParseQuery(req.query)
+    let parser = require('mongo-qp');
+    let ParseQuery= parser.ParseQuery;
+    let ParseAggregate= parser.ParseAggregate
+    ParseQuery(queryObj[, callback]);
+    ParseAggregate(str[, callback]);
 
 //typescript 2.1
-import {ParseQuery} from 'mongo-qp'  
+import {ParseQuery} from 'mongo-qp';
 
-let query =ParseQuery(req.query:Object | string)  
+ParseQuery(req.query: Object | string[, callback:(result)=>any])
+ParseAggregate(str: string[, callback:(result)=>any]);
 
 // es5 in browser
 <script src="node_modules/mongo-qp/lib/mongoqp.js"></script>
