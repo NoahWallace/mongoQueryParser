@@ -1,5 +1,6 @@
 let webpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
-let path=require('path')
+let path=require('path');
+let CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     entry:{
         "mongoqp":"./src",
@@ -34,6 +35,11 @@ module.exports = {
             compressor: {
                 warnings: false
             }
+        }),
+        new CleanWebpackPlugin(['dist', 'lib'], {
+            root: __dirname + '/',
+            verbose: true,
+            dry: false
         })
     ],
     ts:{
