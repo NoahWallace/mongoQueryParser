@@ -24,7 +24,7 @@ describe("#setKey", () => {
         [ "'last-name'", "eq 'Mickey'" ]
     ];
     describe("returns valid keys", () => {
-        normalStr.forEach((item) => {
+        normalStr.map((item) => {
             it(`should return the key ${item[ 0 ]}`, (done) => {
                 let key = setKey(item.join(" "));
                 key.should.be.a("object");
@@ -36,7 +36,7 @@ describe("#setKey", () => {
         });
     });
     describe("returns valid keys with checkExists flag true", () => {
-        normalStr.forEach((item) => {
+        normalStr.map((item) => {
             it(`should return the key ${item[ 0 ].trim()} and have checkExists eq true`, (done) => {
                 let key = setKey("has " + item.join(" "));
                 key.should.be.a("object");
@@ -49,7 +49,7 @@ describe("#setKey", () => {
         });
     });
     describe("returns valid keys with checkExists flag false", () => {
-        normalStr.forEach((item) => {
+        normalStr.map((item) => {
             it(`should return the key ${item[ 0 ].trim()} and have checkExists eq false`, (done) => {
                 let key = setKey("!has " + item.join(" "));
                 key.should.be.a("object");
@@ -62,7 +62,7 @@ describe("#setKey", () => {
         });
     });
     describe("returns invalid keys", () => {
-        invalidStr.forEach((item) => {
+        invalidStr.map((item) => {
             it(`should NOT return the key ${item[ 0 ].trim()}`, (done) => {
                 let key = setKey(item.join(""));
                 key.key.should.not.equal(item[0]);

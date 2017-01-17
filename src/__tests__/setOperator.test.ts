@@ -24,7 +24,7 @@ describe("#setOperator", () => {
             done();
         });
 
-        op.forEach(item => {
+        op.map(item => {
             it(`should return have a property of operator equal to ${item}`, (done) => {
                 const str = `name ${item.replace("$", "")} 'abc'`;
                 let operator = setOperator(str);
@@ -32,7 +32,7 @@ describe("#setOperator", () => {
                 done();
             });
         });
-        pairedop.forEach(item => {
+        pairedop.map(item => {
             it(`should pass operator ${item[0]} and return and object that has property of ${item[1]}`, (done) => {
                 const str = `name ${item[0].replace("$", "")} 'abc'`;
                 let operator = setOperator(str);
@@ -42,7 +42,7 @@ describe("#setOperator", () => {
         });
     });
     describe("falsy operators", () => {
-        notop.forEach(item => {
+        notop.map(item => {
             it(`should return have a property of falsy that is true -${item}`, (done) => {
                 const str = `name ${item.replace("$", "")} 'abc'`;
                 let operator = setOperator(str);

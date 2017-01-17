@@ -247,7 +247,7 @@ describe("#parseString", () => {
         it("should return a valid AND and OR object with Complexities ", (done) => {
             const str = "grades contains 'grade eq 'B' {AND} score eq 23'";
             let newFilter = parseString(str);
-            console.log(JSON.stringify(newFilter))
+
             done();
         });
     });
