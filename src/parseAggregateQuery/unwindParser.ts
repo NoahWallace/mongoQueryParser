@@ -2,8 +2,8 @@ import {valuesRegExp, keysRegExp} from "../regExp";
 export function unwindParser(str:string){
         let splStr=str.split(",");
         let map = {
-            path:                       (val) => /^$/.test(val) ? val : "$" + val,
-            includeArrayIndex:          (val) => /^$+/.test(val) ? val.replace(/^$+/, "") : val,
+            path:                       (val) => /^\$/.test(val) ? val : "$" + val,
+            includeArrayIndex:          (val) => /^\$+/.test(val) ? val.replace(/^\$+/, "") : val,
             preserveNullAndEmptyArrays: (val) => val === 'true' ? true : false,
         }
 
