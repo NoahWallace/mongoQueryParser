@@ -3,12 +3,12 @@ Mongo Query Parser
 
 ## Problem
 
-Using the native mongo db driver for node, It is neccesary to easily pass a set of strings that will define the query objects
+Using the native mongo db driver for node, It is necessary to easily pass a set of strings that will define the query objects
 
 ## Solution
 
 This solution allows a front end developer to use plain language text to query a nodejs/mongodb api.
-
+This package was build on the standard for [MongoDb Node.JS Driver Version 2.2](http://mongodb.github.io/node-mongodb-native/2.2/api/)
 
 ##Usage
 
@@ -21,18 +21,21 @@ npm install mongo-qp
  
 ```
 //es6 js
-let parser = require('mongo-qp')
-let ParseQuery= parser.ParseQuery;
-
-let query =ParseQuery(req.query)
+    let parser = require('mongo-qp');
+    let ParseQuery= parser.ParseQuery;
+    let ParseAggregate= parser.ParseAggregate
+    ParseQuery(queryObj[, callback]);
+    ParseAggregate(str[, callback]);
 
 //typescript 2.1
-import {ParseQuery} from 'mongo-qp'  
+import {ParseQuery} from 'mongo-qp';
 
-let query =ParseQuery(req.query:Object | string)  
+ParseQuery(req.query: Object | string[, callback:(result)=>any])
+ParseAggregate(str: string[, callback:(result)=>any]);
 
 // es5 in browser
-<script src="mongoqp.js"></script>
+<script src="node_modules/mongo-qp/lib/mongoqp.js"></script>
+<script src="node_modules/mongo-qp/lib/mongoqp.min.js"></script>
 // files are included in package
 ```
 ### Query
@@ -141,7 +144,7 @@ When using contains internal operators MUST be wrapped in curly brackets
         {"c":{"$eq":d},
         {"e":{"$eq":f}
     ]}
-```	
+```
 
 ##### EXAMPLE D
 
@@ -177,18 +180,17 @@ Or you can check if a field does not exists
 ```
 const str = "has name nin 'mickey','donald' AND !has last_name"
 
-{"$and":[
-	{"name":{
-		"$exists":true,
-		"$nin":["mickey","donald"]
-		}
-	},
-	{"last_name":{
-		"$exists":false
-		}
-	}
+    {"$and":[
+        {"name":{
+            "$exists":true,
+            "$nin":["mickey","donald"]
+            }
+        },
+        {"last_name":{
+            "$exists":false
+        }
+    }
 ]}
-
 ```
 
 #### Operators
@@ -207,8 +209,8 @@ const str = "has name nin 'mickey','donald' AND !has last_name"
 |mod      | ['<number(divisor)>,<number(remainder)>] | Comma Separated string with length of 2 (ie 4,0)|
 |regex    | '\<string\>' or ['\<string\>']|Requires a regex string pattern that starts with / and ends with /. (gim) is optional|
 |all      | ['\<string\>' or \<number\>] |Comma Separated string (ie 'abc','def',123)]|
-|size     |  \<number\>                 |                                           |
-|contains | queryString                 |Add query string surrounded by single quotes<br/> EXCEPTION : any logical operators(AND\|OR\|NOR) inside the string MUST be wrapped in brackets ( {AND} )|
+|size     |  \<number>                 |                                           |
+|contains | queryString                 |Add query string surrounded by single quotes<br/> EXCEPTION : any logical operators(AND,OR,NOR) inside the string MUST be wrapped in brackets ( {AND} )|
 
 
 NOTE: Any Operator in the above list can be prefaces with 'not' (ie name not eq 'abc')
@@ -283,7 +285,6 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 
 **(1.1.6)** mongo-qp now supports $elemMatch(projection). Usage is the same as query. (mongodb >3.4)
 
-
 #### Example
 
 ```
@@ -303,4 +304,33 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
      }
 
      */
+```
+
+
+# Aggregation
+**(1.2.0)** Now supports simple aggregation pipline querys.
+## Usage
+
+Use the keyword THEN to separate operations in the query pipeline. all values MUST be wrapped in single quote
+
+| Allowed | Restriction                 |Comments                                  |
+|:--------| ------------------------    |:-----------------------------------------|
+|match       | '\<string\>'             | use the match operator to return a filter query|
+|sort       | '\<string\>' or \<number\>  |   Comma Separated string as above                                       |
+|limit      |  \<number\>  |   number as above                                       |
+|skip       |  \<number\>  |   number as above                                       |
+|unwind       | '\<string\>' or \<number\>  |                                          |
+
+
+#### Example
+
+```javascript
+ let str="match 'name eq 'abc'' THEN project '_id,name,created' THEN sort 'last asc, name' THEN unwind 'path name,preserveNullAndEmptyArrays true'";
+ let aggregatePipline = ParseAggregate(str)
+ /*
+    [ { '$match': { name: [Object] } },
+      { '$project': { _id: 1, name: 1, created: 1 } },
+      { '$sort': [ [Object], 'name' ] },
+      { '$unwind': { path: '$name', preserveNullAndEmptyArrays: true } } ]
+  */
 ```

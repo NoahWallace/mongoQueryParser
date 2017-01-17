@@ -28,12 +28,11 @@ export function qsParser (): (str: string) => IParserObj {
     let regExNor: RegExp = new RegExp(/ NOR /g);
 
     function getSplit (obj: string, regex: RegExp): Array<IParserObj> {
-        let newArr: Array<any> = [];
         let spl: Array<string> = obj.split(regex);
-        spl.forEach(item => {
-            newArr.push(parser(item.trim()));
+        return spl.map(item => {
+            return  parser(item.trim());
         });
-        return newArr;
+
     }
 
     function parser (str: string): IParserObj {
@@ -42,15 +41,15 @@ export function qsParser (): (str: string) => IParserObj {
             value = memo[ str ];
         }
         else {
-            if ( str.match(regExOr) ) {
+            if ( regExOr.test(str) ) {
                 value = {};
                 value[ "$or" ] = getSplit(str, regExOr);
             }
-            else if ( str.match(regExAnd) ) {
+            else if ( regExAnd.test(str) ) {
                 value = {};
                 value[ "$and" ] = getSplit(str, regExAnd);
             }
-            else if ( str.match(regExNor) ) {
+            else if ( regExNor.test(str) ) {
                 value = {};
                 value[ "$nor" ] = getSplit(str, regExNor);
             }

@@ -10,9 +10,9 @@ export interface IKeyObj {
 export function setKey (str: string): IKeyObj {
     let keyObj: IKeyObj = {
         key:         null
-    }
+    };
 
-    let key = vrpl.trimQuote(kmtch.getkey(str)[ 0 ].trim())
+    let key = vrpl.trimQuote(kmtch.getkey(str)[ 0 ].trim());
     if ( key.startsWith("has ") ) {
         keyObj.checkExists = true;
     }

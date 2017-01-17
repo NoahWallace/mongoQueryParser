@@ -1,0 +1,1 @@
+export function checkNumber (arg) { return isNaN(Number(arg)) ? null : +arg;}
