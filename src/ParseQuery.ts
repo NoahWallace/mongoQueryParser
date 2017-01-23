@@ -39,7 +39,7 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
     }
     else {
         for (const key in reqQuery) {
-            if (command.hasOwnProperty(key)) {
+            if (command.hasOwnProperty(key) && reqQuery[key] !== undefined) {
                 let action = command[key];
                 returnObj[key] = action(decodeURIComponent(reqQuery[key]));
             }
