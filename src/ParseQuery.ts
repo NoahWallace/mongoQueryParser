@@ -2,6 +2,7 @@ import {qsParser} from "./parseFilterString";
 import {ssParser} from "./parseSortString";
 import {IParserObj} from "./parseFilterString";
 import {getProjection} from "./parseProjectionString"
+import {sympatico} from "./utils"
 /*
  * Returns and array of objects that represent a set of query parameters based on mongodb node driver
  * [<query>,[*<projection>, ...keys]]
@@ -38,7 +39,8 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
         returnObj["filter"] = command.filter(decodeURIComponent(reqQuery));
     }
     else {
-        for (const key in reqQuery) {
+        for (let key in reqQuery) {
+            key = sympatico(key);
             if (command.hasOwnProperty(key) && reqQuery[key] !== undefined) {
                 let action = command[key];
                 returnObj[key] = action(decodeURIComponent(reqQuery[key]));
