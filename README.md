@@ -93,13 +93,15 @@ let query =ParseQuery(req.query)
 
 | key   | initial type | return type |Comment|
 |:----  |:------------:|:-----------:|:-------|
-|filter |string        |Object       ||
-|project|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
-|skip   |number        |Number       |                                         |
-|limit  |number        |Number       |                                         |
-|sort   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
+|($)filter |string        |Object       ||
+|($)project/select|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
+|($)skip   |number        |Number       |                                         |
+|($)limit/top  |number        |Number       |                                         |
+|($)sort/orderby   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
 
 NOTE: ParseQuery accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
+
+1.2.4 added synonyms and $ support (heading towards oData(v4))
 
 ## Rules
 
