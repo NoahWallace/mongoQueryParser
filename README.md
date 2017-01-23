@@ -223,13 +223,13 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 
 ```
 	sort:"name asc,id desc"
-	returns [["name","asc"],["id", "desc"]]
+	returns [["name", 1],["id", -1]] //updated 1.2.2
 	
 	sort:name 
 	returns "name"
 
 	sort:"name asc,id"
-	returns [["name","asc"],"id"]
+	returns [["name", 1],"id"] //updated 1.2.2
 
 ```
 
