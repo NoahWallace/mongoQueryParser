@@ -15,6 +15,7 @@ declare let window: Window;
     }
 })();
 
-export {ParseQuery, ParseAggregate};
+export * from "./ParseQuery";
+export * from "./ParseAggregate";
 export {typeIs} from './utils';
 

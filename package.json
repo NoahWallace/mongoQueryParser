@@ -1,6 +1,6 @@
 {
   "name": "mongo-qp",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Creates a object that contains mongo query objects. filter,sort,projection,limit,skip",
   "main": "./dist/index.js",
   "scripts": {
