@@ -38,7 +38,7 @@ export function qsParser (): (str: string) => IParserObj {
     function parser (str: string): IParserObj {
         let value: IParserObj;
         if ( str in memo ) {
-            value = memo[ str ];
+            return memo[str]
         }
         else {
             if ( regExOr.test(str) ) {
@@ -57,6 +57,7 @@ export function qsParser (): (str: string) => IParserObj {
                 value = getValueObject(str);
             }
         }
+        memo[str]=value;
         return value;
     };
     return parser;
