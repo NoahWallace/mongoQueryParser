@@ -1,4 +1,4 @@
-Mongo Query Parser
+mongo-qp
 ==================
 
 ## Problem
