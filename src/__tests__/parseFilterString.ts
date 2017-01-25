@@ -160,6 +160,7 @@ describe("#parseString", () => {
             done();
         });
 
+
     });
     describe("testing of exists object", () => {
         it("should return object that contains exists", (done) => {
@@ -206,6 +207,19 @@ describe("#parseString", () => {
             andObj[ 1 ][ "assocId" ][ "$exists" ].should.be.true;
             andObj[ 1 ][ "assocId" ].should.haveOwnProperty("$nin");
             andObj[ 1 ][ "assocId" ][ "$nin" ].should.be.a("array").that.contains("225101");
+            done();
+        });
+        it("should should be valid with has keyword and modifier", (done) => {
+            const str = "has has AND has eq hasvalue";
+            let newFilter = parseString(str);
+            let andObj = newFilter[ "$and" ];
+            andObj.should.have.length(2);
+            andObj[ 0 ].should.haveOwnProperty("has");
+            andObj[ 0 ][ "has" ].should.haveOwnProperty("$exists");
+            andObj[ 0 ][ "has" ][ "$exists" ].should.be.true;
+            andObj[ 1 ].should.haveOwnProperty("has");
+            andObj[ 1 ][ "has" ].should.haveOwnProperty("$eq");
+            andObj[ 1 ][ "has" ][ "$eq" ].should.equal("hasvalues");
             done();
         });
     })
