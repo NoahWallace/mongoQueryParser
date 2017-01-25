@@ -14,6 +14,7 @@ describe("#setKey", () => {
         [ "associate.first_name" ],
         [ "last-name" ],
         [ "last_name" ],
+        [ "has", "eq 'Mickey'"]
 
 
     ];
@@ -22,6 +23,7 @@ describe("#setKey", () => {
         [ "associate[ 'first_name']'", " eq 'Mickey'" ],
         [ "'last-nam e'", " eq 'Mickey'" ],
         [ "'last-name'", "eq 'Mickey'" ]
+
     ];
     describe("returns valid keys", () => {
         normalStr.map((item) => {
