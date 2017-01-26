@@ -9,11 +9,13 @@ export function ssParser (str: string): string | Array<string | Array<string>> {
     let single = false;
     spl.map(item => {
         let splItem = item.trim().split(/\s+/);
+        let key=valuesRegExp.replace.trimQuoteAndReplaceSlash(splItem[0]);
         if ( splItem.length > 1 ) {
-            returnObj.push([valuesRegExp.replace.trimQuote(splItem[0]),upDown(splItem[1])]); //[key, TSortString]
+
+            returnObj.push([key,upDown(splItem[1])]); //[key, TSortString]
         }
         else {
-            returnObj.push(valuesRegExp.replace.trimQuote(splItem[ 0 ])); // [key]
+            returnObj.push(key); // [key]
             single = splItem[0].length === 1 ;
         }
 

@@ -14,7 +14,7 @@ let testStr=[
     "''name asc', 'name desc''",
 
 ]
-describe.only("#ParseSortString",()=>{
+describe("#ParseSortString",()=>{
 
     testStr.map(item => {
         it(`should return and array of items`, (done) => {

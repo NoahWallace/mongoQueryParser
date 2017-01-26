@@ -219,7 +219,7 @@ describe("#parseString", () => {
             andObj[ 0 ][ "has" ][ "$exists" ].should.be.true;
             andObj[ 1 ].should.haveOwnProperty("has");
             andObj[ 1 ][ "has" ].should.haveOwnProperty("$eq");
-            andObj[ 1 ][ "has" ][ "$eq" ].should.equal("hasvalues");
+            andObj[ 1 ][ "has" ][ "$eq" ].should.equal("hasvalue");
             done();
         });
     })

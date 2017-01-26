@@ -14,14 +14,22 @@ describe("#setKey", () => {
         [ "associate.first_name" ],
         [ "last-name" ],
         [ "last_name" ],
-        [ "has", "eq 'Mickey'"]
+        [ "has", "eq 'Mickey'"],
 
-
+    ];
+    let oDataStr = [
+        [[ "associate/name ", "in 'Mickey','Donald'" ],"associate.name"],
+        [[ "associate/first_name", "eq 'Mickey'" ],"associate.first_name"],
+        [[ "last-name", "eq 'Mickey'" ],"last-name"],
+        [[ "last_name", "eq 'Mickey'" ],"last_name"],
+        [[ "associate/name " ],"associate.name"],
+        [[ "associate/first_name" ],"associate.first_name"],
+        [[ "'associate/first_name'"],"associate.first_name"]
     ];
     let invalidStr = [
         [ " name'", " eq 'Mickey'" ],
-        [ "associate[ 'first_name']'", " eq 'Mickey'" ],
-        [ "'last-nam e'", " eq 'Mickey'" ],
+        //[ "associate[ 'first_name']'", " eq 'Mickey'" ],
+        //[ "'last-nam e'", " eq 'Mickey'" ],
         [ "'last-name'", "eq 'Mickey'" ]
 
     ];
@@ -63,11 +71,24 @@ describe("#setKey", () => {
             });
         });
     });
+    // TODO:  add functionality to parse bracket notation
     describe("returns invalid keys", () => {
         invalidStr.map((item) => {
             it(`should NOT return the key ${item[ 0 ].trim()}`, (done) => {
                 let key = setKey(item.join(""));
                 key.key.should.not.equal(item[0]);
+                done();
+            });
+        });
+    });
+    describe("returns valid keys", () => {
+        oDataStr.map((item:any[]) => {
+            it(`should return the key ${item[1]}`, (done) => {
+                let key = setKey(item[0].join(" "));
+                key.should.be.a("object");
+                key.should.not.haveOwnProperty("checkExists");
+                key.should.haveOwnProperty("key");
+                key[ "key" ].should.equal(item[ 1 ]);
                 done();
             });
         });
