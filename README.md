@@ -118,7 +118,7 @@ AND OR and NOT are required to be capital. First split is on OR then AND then NO
 When using contains internal operators MUST be wrapped in curly brackets
 1. Example "grades contains 'grade eq 'B' {AND} score eq 23'" returns EXAMPLE D below
 	
-	
+(1.2.13) mongo-qp supports both dot notation and oData forward slash notation (user.name or user/name)
 ##### EXAMPLE A
 	
 ```
