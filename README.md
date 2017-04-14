@@ -1,4 +1,4 @@
-Mongo Query Parser
+mongo-qp
 ==================
 
 ## Problem
@@ -93,13 +93,15 @@ let query =ParseQuery(req.query)
 
 | key   | initial type | return type |Comment|
 |:----  |:------------:|:-----------:|:-------|
-|filter |string        |Object       ||
-|project|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
-|skip   |number        |Number       |                                         |
-|limit  |number        |Number       |                                         |
-|sort   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
+|($)filter |string        |Object       ||
+|($)project/select|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
+|($)skip   |number        |Number       |                                         |
+|($)limit/top  |number        |Number       |                                         |
+|($)sort/orderby   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
 
 NOTE: ParseQuery accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
+
+1.2.4 added synonyms and $ support (heading towards oData(v4))
 
 ## Rules
 
@@ -116,7 +118,7 @@ AND OR and NOT are required to be capital. First split is on OR then AND then NO
 When using contains internal operators MUST be wrapped in curly brackets
 1. Example "grades contains 'grade eq 'B' {AND} score eq 23'" returns EXAMPLE D below
 	
-	
+(1.2.13) mongo-qp supports both dot notation and oData forward slash notation (user.name or user/name)
 ##### EXAMPLE A
 	
 ```
@@ -223,13 +225,13 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 
 ```
 	sort:"name asc,id desc"
-	returns [["name","asc"],["id", "desc"]]
+	returns [["name", 1],["id", -1]] //updated 1.2.2
 	
 	sort:name 
 	returns "name"
 
 	sort:"name asc,id"
-	returns [["name","asc"],"id"]
+	returns [["name", 1],"id"] //updated 1.2.2
 
 ```
 

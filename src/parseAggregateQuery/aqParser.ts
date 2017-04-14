@@ -33,6 +33,7 @@ export function aqParser () {
             }
 
         }
+        memo[str]=value;
         return value
     }
 
