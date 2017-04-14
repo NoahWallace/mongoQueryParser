@@ -19,9 +19,11 @@ export interface IParsedObject {
     sort?: string | (Array<string | Array<string>>);
     limit?: number;
     skip?: number;
-    project?: {[key: string]: 0 | 1};
+    project?: {[key: string]: 0 | 1 | string | IElemMatchObject };
 }
-
+export interface IElemMatchObject{
+    $elemMatch:{[key:string]:any}
+}
 
 export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IParsedObject) => any): IParsedObject {
     let checkNumber = (arg) => isNaN(Number(arg)) ? null : +arg;

@@ -102,6 +102,7 @@ let query =ParseQuery(req.query)
 NOTE: ParseQuery accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
 
 1.2.4 added synonyms and $ support (heading towards oData(v4))
+1.2.14 added alias string to project
 
 ## Rules
 
@@ -275,12 +276,16 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 
 **[$ (projection)](https://docs.mongodb.com/manual/reference/operator/projection/positional/#proj._S_)**
 
+**(1.2.14)** now supports project alias
 
 #### Example
 
 ```
     ParseQuery({ project:'name.$' })
     // { filter: {}, project: {'name.$':1}}
+
+    ParseQuery({ project:'name $SomeField'})
+    // { filter: {}, project: {'name':'$SomeField'}}
 ```
 
 **[$elemMatch(projection)](https://docs.mongodb.com/manual/reference/operator/projection/elemMatch/)**
