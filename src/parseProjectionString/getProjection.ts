@@ -13,7 +13,16 @@ export function getProjection (str: string) {
             }
         }
         else {
-            returnObj[ item.trim() ] = 1;
+            let projection=item.split(/\s/);
+            let p=projection
+                .filter((item)=>{return item.trim() !== ''})
+                .map((item)=>{
+                    return item;
+            })
+
+            p.length > 1 ?
+                returnObj[ p[0].trim() ] = p[1].trim() :
+                returnObj[ p[0].trim() ] = p[0].trim() === "_id" ? 0 : 1;
         }
     });
     return returnObj;
