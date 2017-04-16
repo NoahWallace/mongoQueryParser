@@ -1,5 +1,5 @@
 import { valuesRegExp } from "../regExp";
-export function lookupParser (str: string) {console.log(str)
+export function lookupParser (str: string) {
 	let keywords=["FROM","WHERE","AS"],
 		trm=valuesRegExp.replace.trimQuote(str),
 		errorstr="";
@@ -32,14 +32,14 @@ export function lookupParser (str: string) {console.log(str)
 			let lgth=mapped[i][1]  as number;
 			let key=mapped[i][2]  as string;
 			let param=trm.slice(idx + lgth);
+			let opts;
 			trm=trm.slice(0,mapped[i][0] as number);
 
 			switch(key) {
 				case "WHERE":
-					let opts;
-					opts=param.split("=");
+					opts=param.split(/(=| eq )/);
 					options.localfield=opts[0].trim();
-					options.foreignfield=opts[1].trim();
+					options.foreignfield=opts[2].trim();
 					break;
 				case "FROM":
 					options.from=param.trim();

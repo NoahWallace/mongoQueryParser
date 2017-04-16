@@ -45,9 +45,9 @@ describe("#ParseAggregate",()=>{
 
         done();
     })
-    describe.only("Lookup function",()=>{
+    describe("Lookup function",()=>{
 //grades contains 'grade eq 'B'
-        it("should contian and object",(done)=>{
+        it("should contain and object with correct values",(done)=>{
             let str = "lookup 'FROM users WHERE thisprop=otherprop AS somethingElse'";
             let obj = lookupParser(str);
             obj.should.be.a("Object");
@@ -60,7 +60,7 @@ describe("#ParseAggregate",()=>{
             done();
         })
         it("should contian and object",(done)=>{
-            let str = "lookup 'WHERE thisprop=otherprop AS somethingElse FROM users'";
+            let str = "lookup 'WHERE thisprop eq otherprop AS somethingElse FROM users'";
             let obj = lookupParser(str);
             obj.should.be.a("Object");
             obj.should.have.property("$lookup")

@@ -32,7 +32,7 @@ describe('#ParseQuery',()=>{
             query.project.should.haveOwnProperty("name");
             query.project["name"].should.equal("$storeNum");
             query.project["_id"].should.equal(0);
-            query.project["storeNum"].should.equal(1);console.log(query.filter)
+            query.project["storeNum"].should.equal(1);
             query.filter.should.haveOwnProperty("$and")
             query.filter["$and"].should.be.a("Array").that.has.lengthOf(2);
             done();

@@ -316,6 +316,7 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 
 # Aggregation
 **(1.2.0)** Now supports simple aggregation pipline querys.
+**(1.2.16)** Now Supports lookup query (DB v3.2 or greater)
 ## Usage
 
 Use the keyword THEN to separate operations in the query pipeline. all values MUST be wrapped in single quote
@@ -327,6 +328,7 @@ Use the keyword THEN to separate operations in the query pipeline. all values MU
 |limit      |  \<number\>  |   number as above                                       |
 |skip       |  \<number\>  |   number as above                                       |
 |unwind       | '\<string\>' or \<number\>  |                                          |
+|lookup       | '\<string\>'  | must contain keywords FROM,WHERE, AS |                                          |
 
 
 #### Example
@@ -339,5 +341,13 @@ Use the keyword THEN to separate operations in the query pipeline. all values MU
       { '$project': { _id: 1, name: 1, created: 1 } },
       { '$sort': [ [Object], 'name' ] },
       { '$unwind': { path: '$name', preserveNullAndEmptyArrays: true } } ]
+  */
+```
+
+```javascript
+ let str="lookup 'FROM other_collection WHERE thisfield=thatfield AS newfieldname'";
+ let aggregatePipline = ParseAggregate(str)
+ /*
+    [ { $lookup:{ from: 'other_collection', foreignfield:'thatfield', localfield:'thisfield', as: 'newfieldname'} } ]
   */
 ```
