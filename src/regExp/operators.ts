@@ -1,6 +1,6 @@
 export const operatorsRegExp = {
     regex:{
-        operators:new RegExp(/\s+(not)*\s*(eq|gt|gte|lt|lte|ne|in|nin|is|type|mod|regex|all|size|contains)\s+/)
+        operators:new RegExp(/\s+(not)*\s*(eq|gt|gte|lt|lte|ne|in|nin|is|type|mod|regex|all|size|contains|lookup)\s+/)
     },
     test:{
       hasOperator: (str:string) => operatorsRegExp.regex.operators.test(str)

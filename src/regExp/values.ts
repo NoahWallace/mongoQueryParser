@@ -8,12 +8,13 @@ export const valuesRegExp = {
         trimQuote:                (str: string) => str.replace(/(^'|'$)/g, ""),
         getRegExString:           (str: string) => str.replace(/(^\/|\/([gim]*)?$)/g, ""),
         getRegExOptions:          (str: string) => str.replace(/(^\/.+\/)(?=[gim]?)/, ""),
+        trimQuoteAndReplaceSlash: (str: string) => valuesRegExp.replace.trimQuote(str.replace(/\//g, ".")),
         trimCurlysFromLogicalOps: (str: string) =>
                                       str.replace(/\{(AND|OR|NOR){1}\}/g,
                                           (match) => {
                                               return valuesRegExp.replace.trimCurlyBraces(match)
-                                          }),
-        trimQuoteAndReplaceSlash: (str: string) => valuesRegExp.replace.trimQuote(str.replace(/\//g, "."))
+                                          })
+
 
     },
     test:    {

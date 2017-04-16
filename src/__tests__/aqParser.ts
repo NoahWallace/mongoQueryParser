@@ -1,6 +1,7 @@
 import * as chai from "chai";
 const should = chai.should();
 import { ParseAggregate } from "../ParseAggregate";
+import { lookupParser } from "../parseAggregateQuery/lookupParser";
 
 
 describe("#ParseAggregate",()=>{
@@ -12,10 +13,10 @@ describe("#ParseAggregate",()=>{
          let aggregationArray = ParseAggregate(str);
         aggregationArray.should.be.a("Array");
         aggregationArray.should.have.length(4);
-        aggregationArray[0].should.haveOwnProperty("$match");
-        aggregationArray[1].should.haveOwnProperty("$project");
-        aggregationArray[2].should.haveOwnProperty("$sort");
-        aggregationArray[3].should.haveOwnProperty("$unwind");
+        aggregationArray[0].should.have.property("$match");
+        aggregationArray[1].should.have.property("$project");
+        aggregationArray[2].should.have.property("$sort");
+        aggregationArray[3].should.have.property("$unwind");
 
         done();
     })
@@ -25,8 +26,8 @@ describe("#ParseAggregate",()=>{
         let aggregationArray = ParseAggregate(str);
         aggregationArray.should.be.a("Array");
         aggregationArray.should.have.length(2);
-        aggregationArray[0].should.haveOwnProperty("$match");
-        aggregationArray[1].should.haveOwnProperty("$project");
+        aggregationArray[0].should.have.property("$match");
+        aggregationArray[1].should.have.property("$project");
 
 
         done();
@@ -38,10 +39,38 @@ describe("#ParseAggregate",()=>{
 
         aggregationArray.should.be.a("Array");
         aggregationArray.should.have.length(2);
-        aggregationArray[0].should.haveOwnProperty("$match");
-        aggregationArray[1].should.haveOwnProperty("$project");
+        aggregationArray[0].should.have.property("$match");
+        aggregationArray[1].should.have.property("$project");
 
 
         done();
+    })
+    describe.only("Lookup function",()=>{
+//grades contains 'grade eq 'B'
+        it("should contian and object",(done)=>{
+            let str = "lookup 'FROM users WHERE thisprop=otherprop AS somethingElse'";
+            let obj = lookupParser(str);
+            obj.should.be.a("Object");
+            obj.should.have.property("$lookup")
+                .that.is.a("Object");
+            obj["$lookup"].should.have.property('from').that.equals("users");
+            obj["$lookup"].should.have.property('foreignfield').that.equals("otherprop");
+            obj["$lookup"].should.have.property('localfield').that.equals("thisprop");
+            obj["$lookup"].should.have.property('as').that.equals("somethingElse");
+            done();
+        })
+        it("should contian and object",(done)=>{
+            let str = "lookup 'WHERE thisprop=otherprop AS somethingElse FROM users'";
+            let obj = lookupParser(str);
+            obj.should.be.a("Object");
+            obj.should.have.property("$lookup")
+                .that.is.a("Object");
+            obj["$lookup"].should.have.property('from').that.equals("users");
+            obj["$lookup"].should.have.property('foreignfield').that.equals("otherprop");
+            obj["$lookup"].should.have.property('localfield').that.equals("thisprop");
+            obj["$lookup"].should.have.property('as').that.equals("somethingElse");
+            done();
+        })
+
     })
 })
