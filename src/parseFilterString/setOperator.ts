@@ -25,7 +25,8 @@ export function setOperator (str: string): IOperatorObj {
 function stripOperator(str:string):string{
     let pairs={
         "is":"type",
-        "contains":"elemMatch"
+        "contains":"elemMatch",
+        "join":"lookup"
     };
     return rpl.removeNot(pairs[str] || str);
 }

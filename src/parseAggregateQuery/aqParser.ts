@@ -4,6 +4,7 @@ import { getProjection } from '../parseProjectionString';
 import { checkNumber } from '../utils';
 import { valuesRegExp, keysRegExp } from '../regExp';
 import { unwindParser} from "./unwindParser";
+import { lookupParser} from "./lookupParser";
 export function aqParser () {
     let memo = {};
     let command = {
@@ -13,7 +14,7 @@ export function aqParser () {
         limit:   checkNumber,
         skip:    checkNumber,
         unwind:  unwindParser,
-
+        lookup:  lookupParser
     }
 
     function parser (str: string) {

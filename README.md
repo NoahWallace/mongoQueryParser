@@ -102,6 +102,7 @@ let query =ParseQuery(req.query)
 NOTE: ParseQuery accepts a single parameter of either a object or a string. passing a string will return an object with the filter key only.
 
 1.2.4 added synonyms and $ support (heading towards oData(v4))
+1.2.14 added alias string to project
 
 ## Rules
 
@@ -275,12 +276,16 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 
 **[$ (projection)](https://docs.mongodb.com/manual/reference/operator/projection/positional/#proj._S_)**
 
+**(1.2.14)** now supports project alias
 
 #### Example
 
 ```
     ParseQuery({ project:'name.$' })
     // { filter: {}, project: {'name.$':1}}
+
+    ParseQuery({ project:'name $SomeField'})
+    // { filter: {}, project: {'name':'$SomeField'}}
 ```
 
 **[$elemMatch(projection)](https://docs.mongodb.com/manual/reference/operator/projection/elemMatch/)**
@@ -311,6 +316,7 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 
 # Aggregation
 **(1.2.0)** Now supports simple aggregation pipline querys.
+**(1.2.16)** Now Supports lookup query (DB v3.2 or greater)
 ## Usage
 
 Use the keyword THEN to separate operations in the query pipeline. all values MUST be wrapped in single quote
@@ -322,6 +328,7 @@ Use the keyword THEN to separate operations in the query pipeline. all values MU
 |limit      |  \<number\>  |   number as above                                       |
 |skip       |  \<number\>  |   number as above                                       |
 |unwind       | '\<string\>' or \<number\>  |                                          |
+|lookup       | '\<string\>'  | must contain keywords FROM,WHERE, AS |                                          |
 
 
 #### Example
@@ -334,5 +341,13 @@ Use the keyword THEN to separate operations in the query pipeline. all values MU
       { '$project': { _id: 1, name: 1, created: 1 } },
       { '$sort': [ [Object], 'name' ] },
       { '$unwind': { path: '$name', preserveNullAndEmptyArrays: true } } ]
+  */
+```
+
+```javascript
+ let str="lookup 'FROM other_collection WHERE thisfield=thatfield AS newfieldname'";
+ let aggregatePipline = ParseAggregate(str)
+ /*
+    [ { $lookup:{ from: 'other_collection', foreignfield:'thatfield', localfield:'thisfield', as: 'newfieldname'} } ]
   */
 ```
