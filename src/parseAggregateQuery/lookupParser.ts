@@ -6,8 +6,8 @@ export function lookupParser (str: string) {
 	let lookup={};
 	let options={
 		from:'',
-		localfield:'',
-		foreignfield:'',
+		localField:'',
+		foreignField:'',
 		as:''
 	}
 
@@ -38,8 +38,8 @@ export function lookupParser (str: string) {
 			switch(key) {
 				case "WHERE":
 					opts=param.split(/(=| eq )/);
-					options.localfield=opts[0].trim();
-					options.foreignfield=opts[2].trim();
+					options.localField=opts[0].trim();
+					options.foreignField=opts[2].trim();
 					break;
 				case "FROM":
 					options.from=param.trim();
@@ -51,11 +51,11 @@ export function lookupParser (str: string) {
 		}
 	}
 	if(errorstr){
-		lookup["$lookup"]=errorstr;
-		return lookup;
+		errorstr;
+		return errorstr;
 	}
 	else{
-		lookup["$lookup"]=options;
-		return lookup;
+
+		return options;
 	}
 };
