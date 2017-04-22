@@ -45,7 +45,7 @@ describe("#ParseAggregate",()=>{
 
         done();
     })
-    describe.only("Lookup function",()=>{
+    describe("Lookup function",()=>{
 //grades contains 'grade eq 'B'
         it("should contain and object with correct values",(done)=>{
             let str = "lookup 'FROM users WHERE thisprop=otherprop AS somethingElse'";
@@ -54,7 +54,7 @@ describe("#ParseAggregate",()=>{
 
             done();
         })
-        it("should contian and object",(done)=>{
+        it("should contain and object",(done)=>{
             let str = "lookup 'WHERE thisprop eq otherprop AS somethingElse FROM users'";
             let obj = lookupParser(str);
 
@@ -63,10 +63,55 @@ describe("#ParseAggregate",()=>{
         it("should contian and object",(done)=>{
             let str = "lookup 'FROM users WHERE thisprop=otherprop AS somethingElse '";
             let obj = ParseAggregate(str);
-console.log(JSON.stringify(obj))
+
 
             done();
         })
 
+    })
+    describe.only("Parsing Each Aggregate Function",()=>{
+        it("should parse a simple match object",(done)=>{
+            let str="match 'Name eq B'";
+            let parsedStr=ParseAggregate(str)
+            parsedStr.should.be.a("Array").and.have.lengthOf(1);
+            parsedStr[0].should.haveOwnProperty("$match")
+            parsedStr[0].should.be.a("Object").that.deep.equals({$match:{Name:{'$eq':"B"}}});
+            done();
+        })
+        it("should parse a simple lookup object",(done)=>{
+            let str="lookup 'FROM otherCollection WHERE name=id AS newName'";
+            let parsedStr=ParseAggregate(str)
+            parsedStr.should.be.a("Array").and.have.lengthOf(1);
+            parsedStr[0].should.be.a("Object").that.deep.equals({
+                '$lookup':
+                { from: 'otherCollection',
+                    localField: 'name',
+                    foreignField: 'id',
+                    as: 'newName' } }
+            )
+            done();
+        })
+        it("should parse a simple project object",(done)=>{
+            let str="project '_id,name,address'";
+            let parsedStr=ParseAggregate(str)
+            parsedStr.should.be.a("Array").and.have.lengthOf(1);
+            parsedStr[0].should.be.a("Object").that.deep.equals({ '$project': { _id: 0, name: 1, address: 1 } })
+            done();
+        })
+        it("should parse a complex project object",(done)=>{
+            let str="project '_id $name,name $name.first,address'";
+            let parsedStr=ParseAggregate(str)
+            parsedStr.should.be.a("Array").and.have.lengthOf(1);
+            parsedStr[0].should.be.a("Object").that.deep.equals({ '$project': { _id: '$name', name: '$name.first', address: 1 } } )
+            done();
+        })
+        it("should parse a simple sort object",(done)=>{
+            let str="sort 'last asc, name, first desc'";
+            let parsedStr=ParseAggregate(str);
+            parsedStr.should.be.a("Array").and.have.lengthOf(1);
+
+            parsedStr[0].should.be.a("Object").that.deep.equals({"$sort":[["last",1],"name",["first",-1]]})
+            done();
+        })
     })
 })
