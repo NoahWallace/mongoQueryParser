@@ -21,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/NoahWallace/mongoQueryParser.git"
   },
+  "keywords": ["mongo", "mongodb", "query", "parser", "node", "nodejs", "node driver", "mongo driver","query parser", "Mongodb Node.JS Driver"],
   "author": {
     "name": "Noah Wallace",
     "email": "noah.z.wallace@gmail.com"
