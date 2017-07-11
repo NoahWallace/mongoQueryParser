@@ -4,7 +4,7 @@ export interface IParserObj {
     "$or"?: Array<string | IParserObj>;
     "$and"?: Array<string | IParserObj>;
     "$nor"?: Array<string | IParserObj>;
-    [key: string]: INotOperator| IOperators | number | string;
+    [key: string]: INotOperator | IOperators | number | string | Array<string | IParserObj>;
 }
 export interface INotOperator {
     "$not": IOperators;
