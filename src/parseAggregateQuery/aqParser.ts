@@ -29,7 +29,7 @@ export function aqParser () {
             if ( command[ key ] ) {
                 value = {};
                 let action = command[ key ];
-                value[ "$" + key ] = action(valuesRegExp.replace.trimQuote(body));
+                value[ "$" + key ] = action(valuesRegExp.replace.trimQuote(body),true);
 
             }
 

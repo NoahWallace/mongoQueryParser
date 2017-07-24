@@ -5,6 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "mocha dist/__tests__",
+    "prebuild":"rm -rf lib dist",
     "build": "webpack && tsc",
     "preversion": "npm test",
     "version": "npm run build && git add .",

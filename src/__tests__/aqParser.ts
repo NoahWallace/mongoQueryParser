@@ -110,7 +110,7 @@ describe("#ParseAggregate",()=>{
             let parsedStr=ParseAggregate(str);
             parsedStr.should.be.a("Array").and.have.lengthOf(1);
 
-            parsedStr[0].should.be.a("Object").that.deep.equals({"$sort":[["last",1],"name",["first",-1]]})
+            parsedStr[0].should.be.a("Object").that.deep.equals({"$sort":{"last":1,"name":1,"first":-1}})
             done();
         })
     })
