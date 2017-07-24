@@ -1,11 +1,11 @@
 {
   "name": "mongo-qp",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "description": "Creates a object that contains mongo query objects. filter,sort,projection,limit,skip",
   "main": "./dist/index.js",
   "scripts": {
     "test": "mocha dist/__tests__",
-    "prebuild":"rm -rf lib dist",
+    "prebuild": "rm -rf lib dist",
     "build": "webpack && tsc",
     "preversion": "npm test",
     "version": "npm run build && git add .",
