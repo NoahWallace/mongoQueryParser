@@ -69,7 +69,7 @@ describe("#ParseAggregate",()=>{
         })
 
     })
-    describe.only("Parsing Each Aggregate Function",()=>{
+    describe("Parsing Each Aggregate Function",()=>{
         it("should parse a simple match object",(done)=>{
             let str="match 'Name eq B'";
             let parsedStr=ParseAggregate(str)

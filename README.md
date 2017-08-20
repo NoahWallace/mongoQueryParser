@@ -230,7 +230,6 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 	
 	sort:name 
 	returns "name"
-
 	sort:"name asc,id"
 	returns [["name", 1],"id"] //updated 1.2.2
 
