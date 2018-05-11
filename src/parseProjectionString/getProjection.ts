@@ -7,7 +7,7 @@ export function getProjection (str: string) {
     splObj.forEach(item => {
         let contains = / contains /i;
         if ( contains.test(item) ) {
-            let elemMatch = getValueObject(item)
+            let elemMatch = getValueObject(item);
 
             for ( let key in elemMatch ) {
                 returnObj[ key ] = elemMatch[ key ];

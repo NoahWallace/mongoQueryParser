@@ -9,10 +9,13 @@ import {sympatico} from "./utils"
  */
 export interface IReqQuery {
     filter?: string;
+    $filter?: string;
+    $top?:number;
     sort?: string;
     limit?: number;
     skip?: number;
     project?: string;
+    projection?: string;
 }
 export interface IParsedObject {
     filter: IParserObj;
@@ -20,6 +23,7 @@ export interface IParsedObject {
     limit?: number;
     skip?: number;
     project?: {[key: string]: 0 | 1 | string | IElemMatchObject };
+    projection?: {[key: string]: 0 | 1 | string | IElemMatchObject };
 }
 export interface IElemMatchObject{
     $elemMatch:{[key:string]:any}
@@ -32,20 +36,23 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
         limit: checkNumber,
         sort: ssParser,
         skip: checkNumber,
-        project: getProjection
+        project: getProjection,
+        projection: getProjection
     };
     let returnObj = {
         filter: {}
     };
+
     if (typeof reqQuery === "string") {
         returnObj["filter"] = command.filter(decodeURIComponent(reqQuery));
     }
     else {
         for (let key in reqQuery) {
-            key = sympatico(key);
-            if (command.hasOwnProperty(key) && reqQuery[key] !== undefined) {
-                let action = command[key];
-                returnObj[key] = action(decodeURIComponent(reqQuery[key]));
+            let newKey = sympatico(key);
+
+            if (command.hasOwnProperty(newKey) && reqQuery[key] !== undefined) {
+                let action = command[newKey];
+                returnObj[newKey] = action(decodeURIComponent(reqQuery[key]));
             }
         }
     }

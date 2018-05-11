@@ -10,7 +10,9 @@ Using the native mongo db driver for node, It is necessary to easily pass a set 
 This solution allows a front end developer to use plain language text to query a nodejs/mongodb api.
 This package was build on the standard for [MongoDb Node.JS Driver Version 2.2](http://mongodb.github.io/node-mongodb-native/2.2/api/)
 
-##Usage
+## Usage
+Notes:
+V1.3.0 is a dependancy update ONLY
 
 ### Node
 
