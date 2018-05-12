@@ -3,6 +3,29 @@ const should = chai.should();
 import { ParseQuery } from "../index";
 
 describe('#ParseQuery',()=>{
+    describe("Aliases should resolve properly",()=>{
+
+        it("should return an object that contains a simple filter",(done)=>{
+            let query={$filter:"name eq 'abc'"};
+            let obj=ParseQuery(query);
+            obj.should.be.a("object");
+            obj.should.haveOwnProperty("filter");
+            obj.filter.should.haveOwnProperty("name");
+            done();
+        })
+        it("should return an object that contains a simple filter",(done)=>{
+            let query={$top:1,$skip:1,$orderby:"name asc",$select:"_id,name"};
+            let obj=ParseQuery(query);
+
+            obj.should.be.a("object");
+            obj.should.haveOwnProperty("limit");
+            obj.should.haveOwnProperty("skip");
+            obj.should.haveOwnProperty("project");
+            obj.should.haveOwnProperty("sort");
+
+            done();
+        })
+    })
     describe("Pass a string to Function",()=>{
         let str = "name eq 'abc'";
         let obj = ParseQuery(str);
