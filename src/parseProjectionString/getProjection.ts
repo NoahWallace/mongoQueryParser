@@ -2,7 +2,7 @@ import { getValueObject } from "../parseFilterString/getValueObject";
 export function getProjection (str: string) {
     let splObj = str.split(",");
     let returnObj = {
-        "_id": 0
+        "_id": 1
     };
     splObj.forEach(item => {
         let contains = / contains /i;
@@ -26,5 +26,6 @@ export function getProjection (str: string) {
                 returnObj[ p[0].trim() ] = p[0].trim() === "_id" ? 0 : 1;
         }
     });
+
     return returnObj;
 };

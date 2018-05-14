@@ -43,13 +43,13 @@ ParseAggregate(str: string[, callback:(result)=>any]);
 ### Query
 
 ```
-http://somedomain.com?filter=name eq 'abc' OR somenumber gt 1&limit=10&sort=name asc,created desc&project=_id,name,somenumber
+http://somedomain.com?filter=name eq 'abc' OR somenumber gt 1&limit=10&sort=name asc,created desc&projection=_id,name,somenumber
 
 req.query={
     filter:"name eq 'abc' OR somenumber gt 1",
     limit:10,
     sort:'name asc,created desc',
-    project:"_id,name,somenumber"
+    projection:"_id,name,somenumber"
 
 }
 let query =ParseQuery(req.query)
@@ -80,7 +80,7 @@ let query =ParseQuery(req.query)
          "desc"
       ]
    ],
-   "project":{
+   "projection":{
       "_id":1,
       "name":1,
       "somenumber":1
@@ -96,7 +96,7 @@ let query =ParseQuery(req.query)
 | key   | initial type | return type |Comment|
 |:----  |:------------:|:-----------:|:-------|
 |($)filter |string        |Object       ||
-|($)project/select|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
+|($)project/projection/select|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
 |($)skip   |number        |Number       |                                         |
 |($)limit/top  |number        |Number       |                                         |
 |($)sort/orderby   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
@@ -105,6 +105,7 @@ NOTE: ParseQuery accepts a single parameter of either a object or a string. pass
 
 1.2.4 added synonyms and $ support (heading towards oData(v4))
 1.2.14 added alias string to project
+1.3.2 changed output of project to projection. Code still accepts project and projection
 
 ## Rules
 
@@ -232,7 +233,6 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 	
 	sort:name 
 	returns "name"
-
 	sort:"name asc,id"
 	returns [["name", 1],"id"] //updated 1.2.2
 
@@ -257,7 +257,7 @@ When a Projection key is passed into the query object, mongo-qp will automatical
       *returns
       *   {
       *       filter:{},
-      *       project:{_id:1,name:1}
+      *       projection:{_id:1,name:1}
       *   }
       */
      let queryWithoutId= ParseQuery(withoutId)
@@ -265,7 +265,7 @@ When a Projection key is passed into the query object, mongo-qp will automatical
       * returns
       *   {
       *       filter:{},
-      *       project:{_id:0,name:1}
+      *       projection:{_id:0,name:1}
       *   }
       */
  ```
@@ -279,15 +279,16 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 **[$ (projection)](https://docs.mongodb.com/manual/reference/operator/projection/positional/#proj._S_)**
 
 **(1.2.14)** now supports project alias
+**(1.3.2)** breaking change. \<project\> key is now \<projection\>
 
 #### Example
 
 ```
     ParseQuery({ project:'name.$' })
-    // { filter: {}, project: {'name.$':1}}
+    // { filter: {}, projection: {'name.$':1}}
 
-    ParseQuery({ project:'name $SomeField'})
-    // { filter: {}, project: {'name':'$SomeField'}}
+    ParseQuery({ projection:'name $SomeField'})
+    // { filter: {}, projection: {'name':'$SomeField'}}
 ```
 
 **[$elemMatch(projection)](https://docs.mongodb.com/manual/reference/operator/projection/elemMatch/)**
@@ -300,7 +301,7 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
     ParseQuery({ project:name contains 'score eq 'abc'',_id })
     /*
      { filter: {},
-        project: {
+        projection: {
             "_id":1,
             "name":{
                 "$elemMatch": {
