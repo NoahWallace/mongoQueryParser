@@ -20,7 +20,7 @@ describe('#ParseQuery',()=>{
             obj.should.be.a("object");
             obj.should.haveOwnProperty("limit");
             obj.should.haveOwnProperty("skip");
-            obj.should.haveOwnProperty("project");
+            obj.should.haveOwnProperty("projection");
             obj.should.haveOwnProperty("sort");
 
             done();
@@ -42,20 +42,20 @@ describe('#ParseQuery',()=>{
 
     })
     describe("Pass a string to Function",()=>{
-        it("should return an object that contains projections",(done)=>{
+        it("should return an object that contains projection",(done)=>{
             let query=ParseQuery({project:'name $Name'});
             query.should.be.a("object");
-            query.project.should.haveOwnProperty("name");
-            query.project["name"].should.equal("$Name")
+            query.projection.should.haveOwnProperty("name");
+            query.projection["name"].should.equal("$Name")
             done();
         })
         it("should return an object that contains projections",(done)=>{
             let query=ParseQuery({filter:"name eq 'abc' AND storeNum eq 243",project:'name $storeNum, _id, storeNum'});
             query.should.be.a("object");
-            query.project.should.haveOwnProperty("name");
-            query.project["name"].should.equal("$storeNum");
-            query.project["_id"].should.equal(0);
-            query.project["storeNum"].should.equal(1);
+            query.projection.should.haveOwnProperty("name");
+            query.projection["name"].should.equal("$storeNum");
+            query.projection["_id"].should.equal(0);
+            query.projection["storeNum"].should.equal(1);
             query.filter.should.haveOwnProperty("$and")
             query.filter["$and"].should.be.a("Array").that.has.lengthOf(2);
             done();

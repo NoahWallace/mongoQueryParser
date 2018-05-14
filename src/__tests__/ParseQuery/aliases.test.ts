@@ -31,8 +31,8 @@ describe("All Query Parameters have working aliases",()=>{
         done();
     });
     it("should return property project",(done)=>{
-        obj1.should.haveOwnProperty("project");
-        obj2.should.haveOwnProperty("project");
+        obj1.should.haveOwnProperty("projection");
+        obj2.should.haveOwnProperty("projection");
         done();
     });
     it("should return property skip",(done)=>{
@@ -50,8 +50,8 @@ describe("All Query Parameters have working aliases",()=>{
         obj2.limit.should.be.a("number");
         obj1.skip.should.be.a("number");
         obj2.skip.should.be.a("number");
-        obj1.project.should.be.an("object").with.property("_id");
-        obj2.project.should.be.an("object").with.property("_id");
+        obj1.projection.should.be.an("object").with.property("_id");
+        obj2.projection.should.be.an("object").with.property("_id");
         obj1.filter.should.be.an("object").with.property("name");
         obj2.filter.should.be.an("object").with.property("name");
         obj1.sort.should.be.an("array");

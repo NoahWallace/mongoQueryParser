@@ -3,7 +3,8 @@ export function sympatico(v:string){
     let replObj={
         "true":true,
         "false": false,
-        "select": "project",
+        "select": "projection",
+        "project": "projection",
         "orderby": "sort",
         "top": "limit",
     }

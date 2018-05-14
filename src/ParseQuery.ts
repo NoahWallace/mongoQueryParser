@@ -36,7 +36,6 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
         limit: checkNumber,
         sort: ssParser,
         skip: checkNumber,
-        project: getProjection,
         projection: getProjection
     };
     let returnObj = {

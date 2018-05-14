@@ -21,7 +21,7 @@ describe("#getProjection",()=>{
     it("should return an elemMatch parsed projection",(done)=>{
         let str = "subdoc contains 'title eq 'abc'";
         let parsedProjection=getProjection(str);
-        parsedProjection.should.have.property("_id").that.equals(0);
+        parsedProjection.should.have.property("_id").that.equals(1);
         parsedProjection.should.have.property("subdoc").is.an("object");
         parsedProjection["subdoc"]
             .should.have.property("$elemMatch")
@@ -43,7 +43,7 @@ describe("#getProjection",()=>{
             .that.is.an("object")
             .that.has.property("$and")
             .that.is.an("array");
-		parsedProjection["subdoc"].should.deep.equal({"$elemMatch":{"$and":[{"object":{"$eq":"abc"}},{"score":{"$eq":23}}]}});
+		parsedProjection["subdoc"].should.deep.equal({"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}});
         done();
     })
 
@@ -71,13 +71,18 @@ describe("#getProjection",()=>{
 		parsedProjection.should.haveOwnProperty("name");
 		parsedProjection["name"].should.eq(1);
 		done();
-	})
+	});
 	it("should contain _id with a value of 1",(done)=>{
 		let str = "name";
 		let parsedProjection=getProjection(str);
-		console.log(parsedProjection)
 		parsedProjection.should.haveOwnProperty("_id");
 		parsedProjection._id.should.eq(1);
+		done();
+	});
+	it("should do a match on the in operator",(done)=>{
+		let str="name in 'abc,def'";
+		let projection=getProjection(str);
+		console.log(projection)
 		done();
 	})
 })
