@@ -1,5 +1,3 @@
-import * as chai from "chai";
-const should = chai.should();
 import { ParseQuery } from "../../index";
 
 
