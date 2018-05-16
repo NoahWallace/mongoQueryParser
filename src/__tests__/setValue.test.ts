@@ -162,6 +162,7 @@ describe("#setValue", () => {
         it("should be an array", (done) => {
             const str = "grades contains 'grade eq 'B' {AND} score eq 23'";
             let value = setValue(str, operator);
+            value.should.deep.equal({"$and":[{"grade":{"$eq":"B"}},{"score":{"$eq":23}}]})
             done();
         });
     });

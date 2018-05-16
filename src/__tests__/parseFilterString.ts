@@ -1,5 +1,3 @@
-import * as chai from "chai";
-const should = chai.should();
 import { qsParser } from "../parseFilterString/queryStringParser";
 
 describe("#parseString", () => {
@@ -252,15 +250,14 @@ describe("#parseString", () => {
         it("should return a valid AND and OR object with Complexities ", (done) => {
             const str = "name eq abc1 OR name eq def1 AND name eq abc2 AND name in 'def2','get','ple'";
             let newFilter = parseString(str);
-            /*            newFilter.should.be.a("Object");
-             newFilter.should.haveOwnProperty("$or");
-             newFilter[ "$or" ].should.be.a("Array").with.length(2);*/
+			newFilter.should.deep.equal({"$or":[{"name":{"$eq":"abc1"}},{"$and":[{"name":{"$eq":"def1"}},{"name":{"$eq":"abc2"}},{"name":{"$in":["def2","get","ple"]}}]}]})
             done();
         });
         // TODO: Finish tests for contains Operators
         it("should return a valid AND and OR object with Complexities ", (done) => {
             const str = "grades contains 'grade eq 'B' {AND} score eq 23'";
             let newFilter = parseString(str);
+            newFilter.should.deep.equal({"grades":{"$elemMatch":{"$and":[{"grade":{"$eq":"B"}},{"score":{"$eq":23}}]}}})
 
             done();
         });

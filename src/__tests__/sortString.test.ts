@@ -17,16 +17,15 @@ let testStr=[
 describe("#ParseSortString",()=>{
 
     testStr.map(item => {
-        it(`should return and array of items`, (done) => {
+        it(`should return and array of items from - ${item}`, (done) => {
             let operator = ssParser(item, false);
             operator.should.be.a("array");
             operator[0].should.be.a("array");
             done();
         });
-        it(`should return an object `, (done) => {
+        it(`should return an object from - ${item} `, (done) => {
             let operator = ssParser(item, true);
             operator.should.be.a("object");
-
             done();
         });
     });
