@@ -67,6 +67,13 @@ describe("#setValue", () => {
             value.should.equal("it\'s you\'re we\'ve");
             done();
         });
+        it("should return apostrophes in string", (done) => {
+            const str = "key eq 'Date(2015-01-01)'";
+            let value = setValue(str, operator);
+            value.should.be.a("Date");
+            value.should.be.lessThan(new Date())
+            done();
+        });
     });
     describe("in operator", () => {
         let operator = "$in";

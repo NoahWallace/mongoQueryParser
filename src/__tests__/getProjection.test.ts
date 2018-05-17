@@ -82,7 +82,7 @@ describe("#getProjection",()=>{
 	it("should do a match on the in operator",(done)=>{
 		let str="name in 'abc,def'";
 		let projection=getProjection(str);
-		console.log(projection)
+
 		done();
 	})
 })

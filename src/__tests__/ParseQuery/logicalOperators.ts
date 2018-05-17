@@ -1,6 +1,6 @@
 import {ParseQuery} from "../../index";
 
-describe.only('#ParseQuery', () => {
+describe('#ParseQuery', () => {
     describe("AND operators create root array", () => {
 
         it("should have $and at the root", (done) => {
@@ -18,7 +18,7 @@ describe.only('#ParseQuery', () => {
         it("should have $or at the root with $and as sub object", (done) => {
             const query = {filter: "name eq 'abc' AND title eq 'CEO' OR name eq 'def'"};
             const parser = ParseQuery(query);
-            parser.should.deep.equal({filter: {"$or": [{"$and": [{name: {"eq": "abc"}}, {title: {$eq: "CEO"}}]}, {name: {"$eq": "def"}}]}});
+            parser.should.deep.equal({filter: {"$or": [{"$and": [{name: {"$eq": "abc"}}, {title: {$eq: "CEO"}}]}, {name: {"$eq": "def"}}]}});
             done();
         });
     })
