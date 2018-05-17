@@ -41,7 +41,7 @@ describe('#ParseQuery',()=>{
         })
 
     })
-    describe("Pass a string to Function",()=>{
+    describe("Contains Projection Object",()=>{
         it("should return an object that contains projection",(done)=>{
             let query=ParseQuery({project:'name $Name'});
             query.should.be.a("object");

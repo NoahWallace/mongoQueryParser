@@ -26,6 +26,7 @@ export function setValue (obj: string, operator: string): TValue {
             "true":  true,
             "false": false
         };
+
         value = compare[ str ] || str === "false" ? compare[ str ] : checkType(str);
         if ((operator === "$gt" || operator === "$gte") && typeof value === "string"  ) {
             if(!value || value.match(/^\s+$/))
@@ -37,7 +38,7 @@ export function setValue (obj: string, operator: string): TValue {
     return value;
 }
 
-function checkType(str): string | number | RegExp{
+function checkType(str): string | number | RegExp | Date{
     let cleanStr = rpl.trimQuote(str)
     if(tst.isRegExString(cleanStr)){
         let regExp= rpl.getRegExString(cleanStr);
@@ -45,6 +46,9 @@ function checkType(str): string | number | RegExp{
         return new RegExp(regExp,options) as RegExp;
     }
     else{
+        if(tst.isDateParserString(cleanStr)){
+            return new Date(rpl.getDateString(cleanStr))
+        }
         return isNaN(Number(str)) ? cleanStr : +str as string | number;
     }
 }
