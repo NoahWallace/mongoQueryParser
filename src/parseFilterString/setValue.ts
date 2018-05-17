@@ -38,7 +38,7 @@ export function setValue (obj: string, operator: string): TValue {
     return value;
 }
 
-function checkType(str): string | number | RegExp | Date{
+function checkType(str): string | number | RegExp | Object{
     let cleanStr = rpl.trimQuote(str)
     if(tst.isRegExString(cleanStr)){
         let regExp= rpl.getRegExString(cleanStr);
@@ -47,6 +47,7 @@ function checkType(str): string | number | RegExp | Date{
     }
     else{
         if(tst.isDateParserString(cleanStr)){
+            console.log(rpl.getDateString(cleanStr))
             return new Date(rpl.getDateString(cleanStr))
         }
         return isNaN(Number(str)) ? cleanStr : +str as string | number;

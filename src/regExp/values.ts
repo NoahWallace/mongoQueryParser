@@ -14,12 +14,12 @@ export const valuesRegExp = {
                 (match) => {
                     return valuesRegExp.replace.trimCurlyBraces(match);
                 }),
-        getDateString           : (str: string) => str.replace(/^Date\(([0-9:a-zA-Z\-]*)\)$/, "$1"),
+        getDateString           : (str: string) => str.replace(/^Date\(([0-9:a-zA-Z\-.]*)\)$/, "$1"),
 
     },
     test   : {
         isRegExString     : (str: string) => /(^\/|\/([gim]*)?$)/g.test(str),
-        isDateParserString: (str: string) => /^Date\(([0-9:a-zA-Z\-]*)\)$/.test(str),
+        isDateParserString: (str: string) => /^Date\(([0-9:a-zA-Z\-.]*)\)$/.test(str),
     },
 
 };
