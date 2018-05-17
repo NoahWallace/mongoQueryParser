@@ -106,7 +106,7 @@ NOTE: ParseQuery accepts a single parameter of either a object or a string. pass
 1.2.4 added synonyms and $ support (heading towards oData(v4))
 1.2.14 added alias string to project
 1.3.2 changed output of project to projection. Code still accepts project and projection
-
+1.3.3 added support for Date() parser to create Date objects not just strings
 ## Rules
 
 ### Filter String
@@ -203,12 +203,12 @@ const str = "has name nin 'mickey','donald' AND !has last_name"
 
 | Allowed | Restriction                 |Comments                                  |
 |:--------| ------------------------    |:-----------------------------------------|
-|eq       | '\<string\>' or \<number\>  |                                          |
-|gt       | '\<string\>' or \<number\>  |                                          |
-|gte      | '\<string\>' or \<number\>  |                                          |
-|lt       | '\<string\>' or \<number\>  |                                          |
-|lte      | '\<string\>' or \<number\>  |                                          |
-|ne       | '\<string\>' or \<number\>  |                                          |
+|eq       | '\<string\>' or \<number\> or 'Date(\<string\>)' |                                          |
+|gt       | '\<string\>' or \<number\> or 'Date(\<string\>)'  |                                          |
+|gte      | '\<string\>' or \<number\> or 'Date(\<string\>)'  |                                          |
+|lt       | '\<string\>' or \<number\> or 'Date(\<string\>)'  |                                          |
+|lte      | '\<string\>' or \<number\> or 'Date(\<string\>)'  |                                          |
+|ne       | '\<string\>' or \<number\> or 'Date(\<string\>)'  |                                          |
 |in       | ['\<string\>' or \<number\>] | Comma Separated string (ie 'abc','def',123)] |
 |nin      | ['\<string\>' or \<number\>] | Comma Separated string (ie 'abc','def',123)] |
 |is<type> | '\<string\>' or \<number\> | value as referenced here [mongodb](https://docs.mongodb.com/manual/reference/operator/query/type/#document-type-available-types)|
