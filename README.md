@@ -96,7 +96,7 @@ let query =ParseQuery(req.query)
 | key   | initial type | return type |Comment|
 |:----  |:------------:|:-----------:|:-------|
 |($)filter |string        |Object       ||
-|($)project/projection/select|string        |Object       |Comma separated keys (ie "_id,key1,key2")|
+|($)project/projection/select|string        |Object       |Comma separated keys (ie "_id,key1,key2") \| can also use the include and exclude terms. (ie 'include name,_id,title' or 'exclude name,_id,title')|
 |($)skip   |number        |Number       |                                         |
 |($)limit/top  |number        |Number       |                                         |
 |($)sort/orderby   |string        |Object       |Comma separate keys with type (ie "name asc, id desc")
@@ -242,7 +242,8 @@ Sort string is a paired array where the second argument is either "asc" or "desc
 ### Projection
 
 When a Projection key is passed into the query object, mongo-qp will automatically omit the _id key (_id:0)unless requested.
-
+(1.3.5) _id used by itself will default to include (_id:1). if using requesting multiple items with _id key, the query parser will return a omit clause id:0. Use the exclude string to run an exclusion clause (ie 'exclude _id,name,title')
+exclude\|excl\|include\|incl is available for use in this syntax
 #### EXAMPLE
 
 ```
@@ -268,6 +269,14 @@ When a Projection key is passed into the query object, mongo-qp will automatical
       *       projection:{_id:0,name:1}
       *   }
       */
+
+      ParseQuery({projection:'exclude _id,name'}) // {projection:{_id:0,name:0}}
+      ParseQuery({projection:'exclude _id'}) // {projection:{_id:0}}
+      ParseQuery({projection:'exclude name'}) // {projection:{name:0}}
+
+      ParseQuery({projection:'include _id'}) // {projection:{_id:1}}
+      ParseQuery({projection:'include _id,name'}) // {projection:{_id:0,name:1}}
+
  ```
 
 The reason for this is because in mongo projection, all fields are inclusive except for _id which is an exclusive field. By omitting the field, the [aclage felt more natural
@@ -279,7 +288,10 @@ Mongo 3.4 supports projection operators. mongo-qp will also support projection o
 **[$ (projection)](https://docs.mongodb.com/manual/reference/operator/projection/positional/#proj._S_)**
 
 **(1.2.14)** now supports project alias
+
 **(1.3.2)** breaking change. \<project\> key is now \<projection\>
+
+**(1.3.5)** possible breaking change. projection will now support inclusion and exclusion. to include _id in a query, now omit _id from string
 
 #### Example
 

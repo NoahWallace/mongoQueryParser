@@ -47,7 +47,6 @@ function checkType(str): string | number | RegExp | Object{
     }
     else{
         if(tst.isDateParserString(cleanStr)){
-            console.log(rpl.getDateString(cleanStr))
             return new Date(rpl.getDateString(cleanStr))
         }
         return isNaN(Number(str)) ? cleanStr : +str as string | number;

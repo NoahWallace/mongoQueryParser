@@ -3,12 +3,11 @@ const should = chai.should();
 import { ParseQuery } from "../index";
 
 describe('#ParseQuery',()=>{
-    describe.only("Contain a date object in the filter",()=> {
+    describe("Contain a date object in the filter",()=> {
 
         it("return a filter object with a date value", (done) => {
             let query = { $filter: "updated_at lt 'Date(2018-01-01)'" };
             let obj   = ParseQuery(query);
-            console.log(obj)
             obj.should.be.a("object");
             obj.should.haveOwnProperty("filter");
             obj.filter.updated_at["$lt"].should.be.a("Date");

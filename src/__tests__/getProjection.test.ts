@@ -1,13 +1,42 @@
 import { getProjection } from "../parseProjectionString";
 
 describe("#getProjection",()=>{
-    it("should exclude _id",(done)=>{
-        let projection=getProjection("_id");
-        projection.should.have.property("_id").that.equals(0);
-        done();
-    });
+    describe("Working with exclude and include",()=>{
+        it("should include _id",(done)=>{
+            let projection=getProjection("_id");
+            projection.should.have.property("_id").that.equals(1);
+            done();
+        });
+        it("should exclude _id with exclude parameter",(done)=>{
+            let projection=getProjection("exclude _id");
+            projection.should.have.property("_id").that.equals(0);
+            done();
+        });
+        it("should include _id with include parameter",(done)=>{
+            let projection=getProjection("include _id");
+            projection.should.have.property("_id").that.equals(1);
+            done();
+        });
+        it("should exclude name and _id",(done)=>{
+            let projection=getProjection("exclude _id,name");
+            projection.should.have.property("_id").that.equals(0);
+            projection.should.have.property("name").that.equals(0);
+            done();
+        });
+        it("should include name and exclude _id",(done)=>{
+            let projection=getProjection("include _id,name");
+            projection.should.have.property("_id").that.equals(0);
+            projection.should.have.property("name").that.equals(1);
+            done();
+        });
+    })
     it("should include name",(done)=>{
         let projection=getProjection("name");
+        projection.should.have.property("name").that.equals(1);
+        done();
+    });
+    it("should include name with include parameter",(done)=>{
+        let projection=getProjection("include name");
         projection.should.have.property("name").that.equals(1);
         done();
     });
@@ -18,10 +47,17 @@ describe("#getProjection",()=>{
         projection.should.have.property("description").that.equals(1);
         done();
     });
-    it("should return an elemMatch parsed projection",(done)=>{
+    it("should include multiple simple projections",(done)=>{
+        let projection=getProjection("exclude name,title,description");
+        projection.should.have.property("name").that.equals(0);
+        projection.should.have.property("title").that.equals(0);
+        projection.should.have.property("description").that.equals(0);
+        done();
+    });
+    it("should return an elemMatch parsed projection with no subcomparison",(done)=>{
         let str = "subdoc contains 'title eq 'abc'";
         let parsedProjection=getProjection(str);
-        parsedProjection.should.have.property("_id").that.equals(1);
+        parsedProjection.should.not.have.property("_id");
         parsedProjection.should.have.property("subdoc").is.an("object");
         parsedProjection["subdoc"]
             .should.have.property("$elemMatch")
@@ -32,7 +68,7 @@ describe("#getProjection",()=>{
             .that.equals("abc");
         done();
     });
-    it("should return an elemMatch parsed projection",(done)=>{
+    it("should return an elemMatch parsed projection with AND operator",(done)=>{
         let str = "subdoc contains 'title eq 'abc' {AND} score eq 23',_id";
         let parsedProjection=getProjection(str);
         // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
@@ -61,26 +97,44 @@ describe("#getProjection",()=>{
             .that.is.an("array");
         done();
     })
+    it("should return an elemMatch parsed projection with included documents",(done)=>{
+        let str = "include subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
+        let parsedProjection=getProjection(str);
+        // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
+        parsedProjection.should.have.property("_id").that.equals(0);
+        parsedProjection.should.have.property("name").that.equals(1);
+        parsedProjection.should.have.property("subdoc").is.an("object");
+        parsedProjection["subdoc"]
+            .should.have.property("$elemMatch")
+            .that.is.an("object")
+            .that.has.property("$or")
+            .that.is.an("array");
+        done();
+    })
+    it("should return an elemMatch parsed projection with excluded documents",(done)=>{
+        let str = "exclude subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
+        let parsedProjection=getProjection(str);
+        // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
+        parsedProjection.should.have.property("_id").that.equals(0);
+        parsedProjection.should.have.property("name").that.equals(0);
+        parsedProjection.should.have.property("subdoc").is.an("object");
+        parsedProjection["subdoc"]
+            .should.have.property("$elemMatch")
+            .that.is.an("object")
+            .that.has.property("$or")
+            .that.is.an("array");
+        done();
+    })
 	it("should return a simple projection object",(done)=>{
 		let str = "name, address,_id";
 		let parsedProjection=getProjection(str);
-		parsedProjection.should.haveOwnProperty("_id");
-		parsedProjection._id.should.eq(0);
-		parsedProjection.should.haveOwnProperty("address");
-		parsedProjection["address"].should.eq(1);
-		parsedProjection.should.haveOwnProperty("name");
-		parsedProjection["name"].should.eq(1);
-		done();
-	});
-	it("should contain _id with a value of 1",(done)=>{
-		let str = "name";
-		let parsedProjection=getProjection(str);
-		parsedProjection.should.haveOwnProperty("_id");
-		parsedProjection._id.should.eq(1);
+		parsedProjection.should.have.property("_id").that.equals(0);
+		parsedProjection.should.have.property("address").that.eq(1);
+		parsedProjection.should.have.property("name").that.eq(1);
 		done();
 	});
 	it("should do a match on the in operator",(done)=>{
-		let str="name in 'abc,def'";
+		let str="name in 'abc,def,_id'";
 		let projection=getProjection(str);
 
 		done();

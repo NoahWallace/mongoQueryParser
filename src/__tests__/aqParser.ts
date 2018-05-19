@@ -1,10 +1,8 @@
-import * as chai from "chai";
-const should = chai.should();
 import { ParseAggregate } from "../ParseAggregate";
 import { lookupParser } from "../parseAggregateQuery/lookupParser";
 
-
 describe("#ParseAggregate",()=>{
+
      it("should be an array and have proper values",(done)=>{
          let str=`match 'name eq 'abc'' 
          THEN project '_id,name,created' 
@@ -19,7 +17,8 @@ describe("#ParseAggregate",()=>{
         aggregationArray[3].should.have.property("$unwind");
 
         done();
-    })
+    });
+
     it("should have a mutated project statement",(done)=>{
         let str=`match 'name eq 'abc'' 
          THEN project '_id,name,created,Logging $SomeText.0'`;
