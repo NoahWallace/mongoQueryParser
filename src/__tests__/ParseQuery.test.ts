@@ -70,6 +70,26 @@ describe('#ParseQuery',()=>{
             query.filter.should.haveOwnProperty("$and")
             query.filter["$and"].should.be.a("Array").that.has.lengthOf(2);
             done();
+        });
+        it.only("should have a and object with a or sub object ",(done)=>{
+            let query=ParseQuery("name eq 'Wallace' AND (title eq 'CEO' OR jobTitle eq 'CEO')");
+            query.should.deep.equal({"filter":{"$and":[{"name":{"$eq":"Wallace"}},{"$or":[{"title":{"$eq":"CEO"}},{"jobTitle":{"$eq":"CEO"}}]}]}})
+            done();
+        })
+        it("should have a and object with a or sub object ",(done)=>{
+            let query=ParseQuery("name eq 'abc' AND name eq 'def' OR name eq 'ghi'");
+            query.should.deep.equal({"filter":{"$or":[{"$and":[{"name":{"$eq":"abc"}},{"name":{"$eq":"def"}}]},{"name":{"$eq":"ghi"}}]}})
+            done();
+        })
+        it("should have a and object with a or sub object ",(done)=>{
+            let query=ParseQuery("(name eq 'abc' AND name eq 'def') OR name eq 'ghi'");
+            query.should.deep.equal({"filter":{"$or":[{"$and":[{"name":{"$eq":"abc"}},{"name":{"$eq":"def"}}]},{"name":{"$eq":"ghi"}}]}});
+            done();
+        })
+        it("should have a and object with a or sub object ",(done)=>{
+            let query=ParseQuery("name eq 'abc' AND (name eq 'def' OR name eq 'ghi') AND name eq 'lkh'");
+            query.should.deep.equal({"filter":{"$and":[{"name":{"$eq":"abc"}},{"$or":[{"name":{"$eq":"def"}},{"name":{"$eq":"ghi"}}]},{"name":{"$eq":"lkh"}}]}})
+            done();
         })
     })
 })

@@ -42,6 +42,7 @@ ParseAggregate(str: string[, callback:(result)=>any]);
 ```
 ### Query
 
+**(1.3.6)** added boolean algebra parents operators to string query
 ```
 http://somedomain.com?filter=name eq 'abc' OR somenumber gt 1&limit=10&sort=name asc,created desc&projection=_id,name,somenumber
 
@@ -87,6 +88,21 @@ let query =ParseQuery(req.query)
    }
 }
 
+*/
+
+
+// 1.3.6
+ let query = ParseQuery("name eq 'Wallace' AND (title eq 'CEO' OR jobTitle eq 'CEO')")
+/*
+{"filter":{
+    "$and":[
+        {"name":{"$eq":"Wallace"}},
+        {"$or":[
+            {"title":{"$eq":"CEO"}},
+            {"jobTitle":{"$eq":"CEO"}}
+        ]}
+    ]
+}}
 */
 
 ```
