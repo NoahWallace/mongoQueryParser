@@ -12,7 +12,6 @@ describe('#ParseQuery', () => {
         it("should have $or at the root", () => {
             const query = {filter: "name eq 'abc' OR title eq 'CEO'"};
             const parser = ParseQuery(query);
-            console.log(parser)
             expect(parser).toHaveProperty("filter",{ $or: [ { name: { $eq:"abc" }}, { title:{ $eq:"CEO" } } ]});
             
         })

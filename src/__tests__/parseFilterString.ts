@@ -175,7 +175,9 @@ describe("#parseString", () => {
 
 		it("should return a valid AND and OR object ", () => {
 			const str = "name eq abc1 AND name eq def1 OR name eq abc2 AND name eq def2";
-			let newFilter = parseString(str);
+			let p=qsParser();
+			let newFilter=p(str);
+
 			expect(newFilter).toEqual({
 				$or: [
 					{
