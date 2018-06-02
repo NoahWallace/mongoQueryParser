@@ -1,5 +1,3 @@
-import * as chai from "chai";
-const should = chai.should();
 import { setKey } from "../parseFilterString/setKey";
 
 describe("#setKey", () => {
@@ -35,61 +33,47 @@ describe("#setKey", () => {
     ];
     describe("returns valid keys", () => {
         normalStr.map((item) => {
-            it(`should return the key ${item[ 0 ]}`, (done) => {
+            it(`should return the key ${item[ 0 ]}`, () => {
                 let key = setKey(item.join(" "));
-                key.should.be.a("object");
-                key.should.not.haveOwnProperty("checkExists");
-                key.should.haveOwnProperty("key");
-                key[ "key" ].should.equal(item[ 0 ].trim());
-                done();
+				expect(key).toEqual({key:item[0].trim()})
+                
             });
         });
     });
     describe("returns valid keys with checkExists flag true", () => {
         normalStr.map((item) => {
-            it(`should return the key ${item[ 0 ].trim()} and have checkExists eq true`, (done) => {
+            it(`should return the key ${item[ 0 ].trim()} and have checkExists eq true`, () => {
                 let key = setKey("has " + item.join(" "));
-                key.should.be.a("object");
-                key.should.haveOwnProperty("checkExists");
-                key.checkExists.should.equal(true);
-                key.should.haveOwnProperty("key");
-                key[ "key" ].should.equal(item[ 0 ].trim());
-                done();
+				expect(key).toEqual({checkExists:true,key:item[0].trim()})
+                
             });
         });
     });
     describe("returns valid keys with checkExists flag false", () => {
         normalStr.map((item) => {
-            it(`should return the key ${item[ 0 ].trim()} and have checkExists eq false`, (done) => {
+            it(`should return the key ${item[ 0 ].trim()} and have checkExists eq false`, () => {
                 let key = setKey("!has " + item.join(" "));
-                key.should.be.a("object");
-                key.should.haveOwnProperty("checkExists");
-                key.checkExists.should.equal(false);
-                key.should.haveOwnProperty("key");
-                key[ "key" ].should.equal(item[ 0 ].trim());
-                done();
+				expect(key).toEqual({checkExists:false,key:item[0].trim()})
+                
             });
         });
     });
     // TODO:  add functionality to parse bracket notation
     describe("returns invalid keys", () => {
         invalidStr.map((item) => {
-            it(`should NOT return the key ${item[ 0 ].trim()}`, (done) => {
+            it(`should NOT return the key ${item[ 0 ].trim()}`, () => {
                 let key = setKey(item.join(""));
-                key.key.should.not.equal(item[0]);
-                done();
+                expect(key.key).not.toEqual(item[ 0 ].trim())
+                
             });
         });
     });
     describe("returns valid keys", () => {
         oDataStr.map((item:any[]) => {
-            it(`should return the key ${item[1]}`, (done) => {
+            it(`should return the key ${item[1]}`, () => {
                 let key = setKey(item[0].join(" "));
-                key.should.be.a("object");
-                key.should.not.haveOwnProperty("checkExists");
-                key.should.haveOwnProperty("key");
-                key[ "key" ].should.equal(item[ 1 ]);
-                done();
+				expect(key).toEqual({key:item[1].trim()})
+                
             });
         });
     });

@@ -18,45 +18,45 @@ describe("All Query Parameters have working aliases",()=>{
     };
     let obj1=ParseQuery(params1);
     let obj2=ParseQuery(params2);
-    it("should return property limit",(done)=>{
-        obj1.should.haveOwnProperty("limit");
-        obj2.should.haveOwnProperty("limit");
-        done();
+    it("should return property limit",()=>{
+        expect(obj1).toHaveProperty("limit");
+        expect(obj2).toHaveProperty("limit");
+        
     });
-    it("should return property filter",(done)=>{
-        obj1.should.haveOwnProperty("filter");
-        obj2.should.haveOwnProperty("filter");
-        done();
+    it("should return property filter",()=>{
+        expect(obj1).toHaveProperty("filter");
+        expect(obj2).toHaveProperty("filter");
+        
     });
-    it("should return property project",(done)=>{
-        obj1.should.haveOwnProperty("projection");
-        obj2.should.haveOwnProperty("projection");
-        done();
+    it("should return property project",()=>{
+        expect(obj1).toHaveProperty("projection");
+        expect(obj2).toHaveProperty("projection");
+        
     });
-    it("should return property skip",(done)=>{
-        obj1.should.haveOwnProperty("skip");
-        obj2.should.haveOwnProperty("skip");
-        done();
+    it("should return property skip",()=>{
+        expect(obj1).toHaveProperty("skip");
+        expect(obj2).toHaveProperty("skip");
+        
     });
-    it("should return property sort",(done)=>{
-        obj1.should.haveOwnProperty("sort");
-        obj2.should.haveOwnProperty("sort");
-        done();
+    it("should return property sort",()=>{
+        expect(obj1).toHaveProperty("sort");
+        expect(obj2).toHaveProperty("sort");
+        
     });
-    it("should return keys or values",(done)=>{
-        obj1.limit.should.be.a("number");
-        obj2.limit.should.be.a("number");
-        obj1.skip.should.be.a("number");
-        obj2.skip.should.be.a("number");
-        obj1.projection.should.be.an("object").with.property("_id");
-        obj2.projection.should.be.an("object").with.property("_id");
-        obj1.filter.should.be.an("object").with.property("name");
-        obj2.filter.should.be.an("object").with.property("name");
-        obj1.sort.should.be.an("array");
-        obj2.sort.should.be.an("array");
+    it("should return keys or values",()=>{
+        expect(obj1).toHaveProperty("limit");
+        expect(obj2).toHaveProperty("limit");
+        expect(obj1).toHaveProperty("skip");
+        expect(obj2).toHaveProperty("skip");
+        expect(obj1).toHaveProperty("projection");
+        expect(obj2).toHaveProperty("projection");
+        expect(obj1).toHaveProperty("filter");
+        expect(obj2).toHaveProperty("filter");
+        expect(obj1).toHaveProperty("sort");
+        expect(obj2).toHaveProperty("sort");
 
 
 
-        done();
+        
     })
 })

@@ -2,141 +2,104 @@ import { getProjection } from "../parseProjectionString";
 
 describe("#getProjection",()=>{
     describe("Working with exclude and include",()=>{
-        it("should include _id",(done)=>{
+        it("should include _id",()=>{
             let projection=getProjection("_id");
-            projection.should.have.property("_id").that.equals(1);
-            done();
+            expect(projection).toHaveProperty("_id",1);
+            
         });
-        it("should exclude _id with exclude parameter",(done)=>{
+        it("should exclude _id with exclude parameter",()=>{
             let projection=getProjection("exclude _id");
-            projection.should.have.property("_id").that.equals(0);
-            done();
+            expect(projection).toHaveProperty("_id",0)
+            
         });
-        it("should include _id with include parameter",(done)=>{
+        it("should include _id with include parameter",()=>{
             let projection=getProjection("include _id");
-            projection.should.have.property("_id").that.equals(1);
-            done();
+            expect(projection).toHaveProperty("_id",1);
+            
         });
-        it("should exclude name and _id",(done)=>{
+        it("should exclude name and _id",()=>{
             let projection=getProjection("exclude _id,name");
-            projection.should.have.property("_id").that.equals(0);
-            projection.should.have.property("name").that.equals(0);
-            done();
+            expect(projection).toHaveProperty("_id",0);
+            expect(projection).toHaveProperty("name",0);
+            
         });
-        it("should include name and exclude _id",(done)=>{
+        it("should include name and exclude _id",()=>{
             let projection=getProjection("include _id,name");
-            projection.should.have.property("_id").that.equals(0);
-            projection.should.have.property("name").that.equals(1);
-            done();
+            expect(projection).toHaveProperty("_id",0);
+            expect(projection).toHaveProperty("name",1);
+            
         });
     })
-    it("should include name",(done)=>{
+    it("should include name",()=>{
         let projection=getProjection("name");
-        projection.should.have.property("name").that.equals(1);
-        done();
+        expect(projection).toHaveProperty("name",1);
+        
     });
-    it("should include name with include parameter",(done)=>{
+    it("should include name with include parameter",()=>{
         let projection=getProjection("include name");
-        projection.should.have.property("name").that.equals(1);
-        done();
+        expect(projection).toHaveProperty("name",1);
+        
     });
-    it("should include multiple simple projections",(done)=>{
+    it("should include multiple simple projections",()=>{
         let projection=getProjection("name,title,description");
-        projection.should.have.property("name").that.equals(1);
-        projection.should.have.property("title").that.equals(1);
-        projection.should.have.property("description").that.equals(1);
-        done();
+        expect(projection).toHaveProperty("name",1);
+        expect(projection).toHaveProperty("title",1);
+        expect(projection).toHaveProperty("description",1);
+        
     });
-    it("should include multiple simple projections",(done)=>{
+    it("should include multiple simple projections",()=>{
         let projection=getProjection("exclude name,title,description");
-        projection.should.have.property("name").that.equals(0);
-        projection.should.have.property("title").that.equals(0);
-        projection.should.have.property("description").that.equals(0);
-        done();
+        expect(projection).toHaveProperty("name",0);
+        expect(projection).toHaveProperty("title",0);
+        expect(projection).toHaveProperty("description",0);
+        
     });
-    it("should return an elemMatch parsed projection with no subcomparison",(done)=>{
+    it("should return an elemMatch parsed projection with no subcomparison",()=>{
         let str = "subdoc contains 'title eq 'abc'";
-        let parsedProjection=getProjection(str);
-        parsedProjection.should.not.have.property("_id");
-        parsedProjection.should.have.property("subdoc").is.an("object");
-        parsedProjection["subdoc"]
-            .should.have.property("$elemMatch")
-            .that.is.an("object")
-            .that.has.property("title")
-            .that.is.an("object")
-            .that.has.property("$eq")
-            .that.equals("abc");
-        done();
+        let projection=getProjection(str);
+        expect(projection).not.toHaveProperty("_id");
+        expect(projection).toHaveProperty("subdoc", {$elemMatch:{title:{$eq:"abc"}}})
+        
     });
-    it("should return an elemMatch parsed projection with AND operator",(done)=>{
+    it("should return an elemMatch parsed projection with AND operator",()=>{
         let str = "subdoc contains 'title eq 'abc' {AND} score eq 23',_id";
-        let parsedProjection=getProjection(str);
+        let projection=getProjection(str);
         // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
-        parsedProjection.should.have.property("_id").that.equals(0);
-        parsedProjection.should.have.property("subdoc").is.an("object");
-        parsedProjection["subdoc"]
-            .should.have.property("$elemMatch")
-            .that.is.an("object")
-            .that.has.property("$and")
-            .that.is.an("array");
-		parsedProjection["subdoc"].should.deep.equal({"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}});
-        done();
+        expect(projection).toHaveProperty("_id",0);
+        expect(projection).toHaveProperty("subdoc",{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}});
+		expect(projection).toEqual({_id:0,subdoc:{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}});
+        
     })
 
 
-    it("should return an elemMatch parsed projection",(done)=>{
+    it("should return an elemMatch parsed projection",()=>{
         let str = "subdoc contains 'title eq 'abc' {OR} score eq 23',_id";
-        let parsedProjection=getProjection(str);
+        let projection=getProjection(str);
         // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
-        parsedProjection.should.have.property("_id").that.equals(0);
-        parsedProjection.should.have.property("subdoc").is.an("object");
-        parsedProjection["subdoc"]
-            .should.have.property("$elemMatch")
-            .that.is.an("object")
-            .that.has.property("$or")
-            .that.is.an("array");
-        done();
+        expect(projection).toHaveProperty("_id",0);
+        expect(projection).toHaveProperty("subdoc",{"$elemMatch":{"$or":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}});
+		expect(projection).toEqual({_id:0,subdoc:{"$elemMatch":{"$or":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}});
     })
-    it("should return an elemMatch parsed projection with included documents",(done)=>{
-        let str = "include subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
-        let parsedProjection=getProjection(str);
-        // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
-        parsedProjection.should.have.property("_id").that.equals(0);
-        parsedProjection.should.have.property("name").that.equals(1);
-        parsedProjection.should.have.property("subdoc").is.an("object");
-        parsedProjection["subdoc"]
-            .should.have.property("$elemMatch")
-            .that.is.an("object")
-            .that.has.property("$or")
-            .that.is.an("array");
-        done();
-    })
-    it("should return an elemMatch parsed projection with excluded documents",(done)=>{
-        let str = "exclude subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
-        let parsedProjection=getProjection(str);
-        // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
-        parsedProjection.should.have.property("_id").that.equals(0);
-        parsedProjection.should.have.property("name").that.equals(0);
-        parsedProjection.should.have.property("subdoc").is.an("object");
-        parsedProjection["subdoc"]
-            .should.have.property("$elemMatch")
-            .that.is.an("object")
-            .that.has.property("$or")
-            .that.is.an("array");
-        done();
-    })
-	it("should return a simple projection object",(done)=>{
-		let str = "name, address,_id";
-		let parsedProjection=getProjection(str);
-		parsedProjection.should.have.property("_id").that.equals(0);
-		parsedProjection.should.have.property("address").that.eq(1);
-		parsedProjection.should.have.property("name").that.eq(1);
-		done();
+    it("should return an elemMatch parsed projection with included documents",()=> {
+		let str = "include subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
+		let projection = getProjection(str);
+		// {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
+		expect(projection).toHaveProperty("_id", 0);
+		expect(projection).toHaveProperty("name", 1);
 	});
-	it("should do a match on the in operator",(done)=>{
-		let str="name in 'abc,def,_id'";
+    it("should return an elemMatch parsed projection with excluded documents",()=>{
+        let str = "exclude subdoc contains 'title eq 'abc' {OR} score eq 23',_id,name";
+        let projection=getProjection(str);
+        // {"_id":0,"subdoc":{"$elemMatch":{"$and":[{"title":{"$eq":"abc"}},{"score":{"$eq":23}}]}}}
+        expect(projection).toHaveProperty("_id",0);
+        expect(projection).toHaveProperty("name",0);
+    });
+	it("should return a simple projection object",()=>{
+		let str = "name, address,_id";
 		let projection=getProjection(str);
-
-		done();
-	})
-})
+		expect(projection).toHaveProperty("_id",0);
+		expect(projection).toHaveProperty("address",1);
+		expect(projection).toHaveProperty("name",1)
+		
+	});
+});

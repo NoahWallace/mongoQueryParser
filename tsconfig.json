@@ -7,12 +7,14 @@
     "sourceMap": true,
     "lib": ["es2015", "es6", "DOM"],
     "declaration": true,
-    "declarationDir": "dist/types"
+    "declarationDir": "dist/types",
+    "skipLibCheck":true
   },
   "exclude": [
     "node_modules",
     "dist",
     "lib",
-    "*.js"
+    "*.js",
+    "src/__tests__"
   ]
 }

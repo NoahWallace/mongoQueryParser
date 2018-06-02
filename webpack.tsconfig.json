@@ -5,7 +5,8 @@
     "outDir": "./lib",
     "target": "es5",
     "sourceMap": false,
-    "lib": ["es2015", "es6", "DOM", "es5"]
+    "lib": ["es2015", "es6", "DOM", "es5"],
+    "skipLibCheck":true
   },
   "exclude": [
     "node_modules",
