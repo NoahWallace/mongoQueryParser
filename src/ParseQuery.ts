@@ -28,10 +28,24 @@ export interface IParsedObject {
 export interface IElemMatchObject{
     $elemMatch:{[key:string]:any}
 }
+export declare namespace ParseQuery{
+	export function ParseQuery(reqQuery:IReqQuery):IParsedObject;
+	export function ParseQuery(reqQuery:IReqQuery,options?:any):IParsedObject;
+	export function ParseQuery(reqQuery:IReqQuery,callback?:(result: IParsedObject)=>any):void;
+	export function ParseQuery(reqQuery:IReqQuery, options?:any, callback?:(result: IParsedObject) => any):void;
+}
 
-export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IParsedObject) => any): IParsedObject {
+
+export function ParseQuery(reqQuery: IReqQuery | string, ...args): IParsedObject {
     let checkNumber = (arg) => isNaN(Number(arg)) ? null : +arg;
-    let command = {
+
+	const cb = (typeof args[args.length-1] === 'function') ? args.pop() : null;
+	const options = (args.length > 0) ? args.shift() : {};
+    let defaultOptions={
+        sortObject:'array',
+            ...options
+    }
+	let command = {
         filter: qsParser(),
         limit: checkNumber,
         sort: ssParser,
@@ -50,10 +64,21 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
             let newKey = sympatico(key);
 
             if (command.hasOwnProperty(newKey) && reqQuery[key] !== undefined) {
-                let action = command[newKey];
-                returnObj[newKey] = action(decodeURIComponent(reqQuery[key]));
+				let action = command[newKey];
+				let modifier;
+                switch(newKey){
+                    case "sort":
+                        defaultOptions.sortObject === 'object' ?  modifier = true : modifier = false;
+                        break;
+                    default:
+                        modifier= null;
+                }
+
+                returnObj[newKey] = action(decodeURIComponent(reqQuery[key]),modifier);
             }
         }
     }
-    return callback ? callback(returnObj) : returnObj;
+    if(cb) cb(returnObj);
+    else return returnObj;
+
 }

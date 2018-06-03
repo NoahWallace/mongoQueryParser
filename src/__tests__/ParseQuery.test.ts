@@ -14,6 +14,47 @@ describe('#ParseQuery', () => {
 			});
 		})
 	});
+	describe("Modify Sort options", () => {
+		it("should return a sort array", () => {
+			let query = {sort:"first_name asc"};
+			let obj = ParseQuery(query);
+			expect(obj).toMatchObject({
+				filter: {},
+				sort:[["first_name",1]]
+			});
+		})
+		it("should return a sort object", () => {
+			let query = {sort:"first_name asc"};
+			let obj = ParseQuery(query,{sortObject:'object'});
+			expect(obj).toMatchObject({
+				filter: {},
+				sort:{first_name:1}
+			});
+		})
+	});
+	describe("Utilize callbacks", () => {
+		it("uses no callback", () => {
+			let query = "name eq 'abc'";
+			let obj = ParseQuery(query);
+			expect(obj).toMatchObject({filter:{name: {$eq:"abc"}}});
+		})
+		it("uses a callback as second argument with no middle argument", (done) => {
+			let query = "name eq 'abc'";
+			function cb(res){
+				expect(res).toMatchObject({filter:{name: {$eq:"abc"}}});
+				done();
+			}
+			 ParseQuery(query,cb);
+		})
+		it("uses a callback as last argument", (done) => {
+			let query = "name eq 'abc'";
+			function cb(res){
+				expect(res).toMatchObject({filter:{name: {$eq:"abc"}}});
+				done();
+			}
+			ParseQuery(query,{},cb);
+		})
+	});
 	describe("Aliases should resolve properly", () => {
 
 		it("should return an object that contains a simple filter", () => {
