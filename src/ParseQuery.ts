@@ -49,7 +49,7 @@ export function ParseQuery(reqQuery: IReqQuery | string, callback?: (result: IPa
         for (let key in reqQuery) {
             let newKey = sympatico(key);
 
-            if (command.hasOwnProperty(newKey) && reqQuery[key] !== undefined) {
+            if (command.hasOwnProperty(newKey) && reqQuery[key] && reqQuery[key] !== undefined) {
                 let action = command[newKey];
                 returnObj[newKey] = action(decodeURIComponent(reqQuery[key]));
             }
