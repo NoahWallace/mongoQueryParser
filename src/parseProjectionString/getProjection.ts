@@ -13,7 +13,7 @@ export function getProjection(str: string) {
     }
 
     let splObj = str.split(",");
-
+console.log(str,splObj)
     splObj.forEach((item, i, arr) => {
         let contains = / contains /i;
         if ( contains.test(item) ) {
@@ -23,8 +23,10 @@ export function getProjection(str: string) {
                 returnObj[ key ] = elemMatch[ key ];
             }
         }
+
         else {
-            let projection = item.split(/\s/);
+
+            let projection = item.replace(/\s\$/g,",$").split(",");
 
             let p = projection.filter((item) => {
                     return item.trim() !== "";

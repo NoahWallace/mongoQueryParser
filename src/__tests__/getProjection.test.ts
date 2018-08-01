@@ -29,6 +29,18 @@ describe("#getProjection",()=>{
             projection.should.have.property("name").that.equals(1);
             done();
         });
+        it("should include projection when there is a space in the value",(done)=>{
+            let projection=getProjection("include this key");
+            projection.should.have.property("this key").that.equals(1);
+            done();
+        })
+        it("should include projection when there is a space in the value",(done)=>{
+            let projection=getProjection("this key,something,My Other Stuff");
+            projection.should.have.property("this key").that.equals(1);
+            projection.should.have.property("something").that.equals(1);
+            projection.should.have.property("My Other Stuff").that.equals(1);
+            done();
+        })
     })
     it("should include name",(done)=>{
         let projection=getProjection("name");
@@ -133,10 +145,5 @@ describe("#getProjection",()=>{
 		parsedProjection.should.have.property("name").that.eq(1);
 		done();
 	});
-	it("should do a match on the in operator",(done)=>{
-		let str="name in 'abc,def,_id'";
-		let projection=getProjection(str);
 
-		done();
-	})
 })

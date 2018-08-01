@@ -60,6 +60,15 @@ describe('#ParseQuery',()=>{
             query.projection["name"].should.equal("$Name")
             done();
         })
+        it("should return an object that contains projection with spaces",(done)=>{
+            let query=ParseQuery({project:'my key,name $Name,employee, your key'});
+            query.should.be.a("object");
+            query.projection.should.haveOwnProperty("name").that.equals("$Name");
+            query.projection.should.haveOwnProperty("my key").that.equals(1);
+            query.projection.should.haveOwnProperty("employee").that.equals(1);
+            query.projection.should.haveOwnProperty("your key").that.equals(1);
+            done();
+        })
         it("should return an object that contains projections",(done)=>{
             let query=ParseQuery({filter:"name eq 'abc' AND storeNum eq 243",project:'name $storeNum, _id, storeNum'});
             query.should.be.a("object");
@@ -71,7 +80,7 @@ describe('#ParseQuery',()=>{
             query.filter["$and"].should.be.a("Array").that.has.lengthOf(2);
             done();
         });
-        it.only("should have a and object with a or sub object ",(done)=>{
+        it("should have a and object with a or sub object ",(done)=>{
             let query=ParseQuery("name eq 'Wallace' AND (title eq 'CEO' OR jobTitle eq 'CEO')");
             query.should.deep.equal({"filter":{"$and":[{"name":{"$eq":"Wallace"}},{"$or":[{"title":{"$eq":"CEO"}},{"jobTitle":{"$eq":"CEO"}}]}]}})
             done();
