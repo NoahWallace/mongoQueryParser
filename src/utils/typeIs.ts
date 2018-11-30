@@ -1,4 +1,4 @@
-export function typeIs (obj: any, type: string) {
+export function typeIs (obj: any, type: string): boolean {
     switch ( type.toLowerCase() ) {
         case "string":
             return typeof obj === "string" || obj instanceof String;
